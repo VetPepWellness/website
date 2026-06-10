@@ -254,6 +254,18 @@
         <button type="submit" class="btn btn-gold btn-block">Place Order</button>
         <p class="form-hint" id="checkout-hint"></p>
       </form>
+
+      <!-- One-tap send options (shown after Place Order) -->
+      <div class="order-channels" id="order-channels" hidden>
+        <p class="order-sent-title">✓ Order ready — send it to us:</p>
+        <div class="channel-btns">
+          <a class="btn btn-gold channel-btn" id="ch-sms" href="#">💬 Text</a>
+          <a class="btn btn-gold channel-btn" id="ch-wa" href="#" target="_blank" rel="noopener">🟢 WhatsApp</a>
+          <a class="btn btn-gold channel-btn" id="ch-email" href="#">✉ Email</a>
+          <button class="btn btn-ghost channel-btn" id="ch-copy" type="button">⧉ Copy Order</button>
+        </div>
+        <p class="order-channels-note">Pick whatever's easiest — we'll confirm your total &amp; payment right back.</p>
+      </div>
     </div>
   </div>
 

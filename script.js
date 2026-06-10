@@ -26,6 +26,11 @@ const PRODUCTS = [
   { id: "lipoc",   cat: "supply", name: "Lipo-C with B12",      dose: "",             price: 60 },
 ];
 
+// ---- Your contact details (used for one-tap order sending) ----
+// TODO: replace with your real number (digits only, incl. country code) and email.
+const ORDER_PHONE = "10000000000";          // e.g. "18065551234"
+const ORDER_EMAIL = "hello@vetpepwellness.com";
+
 const catById = (id) => CATEGORIES.find((c) => c.id === id) || {};
 const money = (n) => "$" + n.toLocaleString();
 
@@ -180,6 +185,8 @@ function closeCart() {
 }
 
 // ---- Checkout ----
+const CUST_KEY = "vpw_customer";
+
 function openCheckout() {
   const ids = Object.keys(cart); if (!ids.length) return;
   const summary = document.getElementById("checkout-summary");
@@ -189,29 +196,60 @@ function openCheckout() {
       return `<div class="checkout-line"><span>${p.name}${p.dose ? " " + p.dose : ""} × ${cart[id]}</span><span>${money(p.price * cart[id])}</span></div>`;
     }).join("") +
     `<div class="checkout-line total"><span>Subtotal</span><span>${money(cartSubtotal())}</span></div>`;
+  // Prefill saved customer details for fast repeat orders
+  try {
+    const saved = JSON.parse(localStorage.getItem(CUST_KEY)) || {};
+    const f = document.getElementById("checkout-form");
+    ["name", "contact", "address"].forEach((k) => { if (saved[k]) f[k].value = saved[k]; });
+  } catch {}
+  // Reset to form view
+  document.getElementById("checkout-form").hidden = false;
+  document.getElementById("order-channels").hidden = true;
   document.getElementById("checkout-overlay").hidden = false;
 }
 function closeCheckout() { document.getElementById("checkout-overlay").hidden = true; }
 
+function buildOrderText(f) {
+  const lines = Object.keys(cart).map((id) => {
+    const p = PRODUCTS.find((x) => x.id === id);
+    return `• ${p.name}${p.dose ? " " + p.dose : ""} x${cart[id]} = ${money(p.price * cart[id])}`;
+  }).join("\n");
+  return (
+    `New Order — Vet Pep Wellness\n${lines}\nSubtotal: ${money(cartSubtotal())}\n` +
+    `(shipping/total to be confirmed)\n\n` +
+    `Name: ${f.name.value}\nContact: ${f.contact.value}\nShip to:\n${f.address.value}\n\n` +
+    `Notes: ${f.notes.value || "—"}`
+  );
+}
+
 function submitOrder(e) {
   e.preventDefault();
   const f = e.target;
-  const lines = Object.keys(cart).map((id) => {
-    const p = PRODUCTS.find((x) => x.id === id);
-    return `- ${p.name}${p.dose ? " " + p.dose : ""} x${cart[id]} = ${money(p.price * cart[id])}`;
-  }).join("\n");
+  // Save details so repeat orders are one tap
+  try {
+    localStorage.setItem(CUST_KEY, JSON.stringify({ name: f.name.value, contact: f.contact.value, address: f.address.value }));
+  } catch {}
+
+  const text = buildOrderText(f);
+  const enc = encodeURIComponent(text);
   const subject = encodeURIComponent(`New Order — ${f.name.value}`);
-  const body = encodeURIComponent(
-    `ORDER\n${lines}\nSubtotal: ${money(cartSubtotal())}\n(shipping/total to be confirmed)\n\n` +
-    `Name: ${f.name.value}\nContact: ${f.contact.value}\nShip to:\n${f.address.value}\n\nNotes: ${f.notes.value || "—"}`
-  );
+  const body = encodeURIComponent(text);
+
+  // Wire up the one-tap send channels (customer picks whatever's easiest)
+  document.getElementById("ch-sms").href = `sms:${ORDER_PHONE}?&body=${enc}`;
+  document.getElementById("ch-wa").href = `https://wa.me/${ORDER_PHONE}?text=${enc}`;
+  document.getElementById("ch-email").href = `mailto:${ORDER_EMAIL}?subject=${subject}&body=${body}`;
+  document.getElementById("ch-copy").onclick = () => {
+    navigator.clipboard?.writeText(text);
+    document.getElementById("ch-copy").textContent = "✓ Copied";
+  };
+
   // ── PAYMENT INTEGRATION POINT ───────────────────────────────────────────
-  // This currently emails the order to you for manual confirmation (works on
-  // free static hosting). To accept card payments later, replace the line
-  // below with a redirect to Stripe Checkout / Snipcart / your processor.
-  // TODO: replace with your real inbox.
-  window.location.href = `mailto:hello@vetpepwellness.com?subject=${subject}&body=${body}`;
-  document.getElementById("checkout-hint").textContent = "Opening your email to send the order…";
+  // Orders are sent to you for confirmation (works on free static hosting,
+  // no deception, no processor risk). To add legitimate card/crypto checkout
+  // later, trigger your processor's hosted checkout here instead.
+  document.getElementById("checkout-form").hidden = true;
+  document.getElementById("order-channels").hidden = false;
 }
 
 // ---- Search & filter ----

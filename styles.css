@@ -207,6 +207,13 @@ img { display: block; max-width: 100%; }
 .checkout-form input:focus, .checkout-form textarea:focus { outline: none; border-color: var(--gold); }
 .form-row { display: grid; gap: 0.9rem; grid-template-columns: 1fr 1fr; }
 
+/* One-tap order channels */
+.order-channels { text-align: center; }
+.order-sent-title { color: var(--gold-light); font-size: 1.15rem; margin-bottom: 1rem; font-family: "Cormorant Garamond", serif; }
+.channel-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+.channel-btn { width: 100%; }
+.order-channels-note { color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem; }
+
 /* ===== Page (sub-pages) ===== */
 .page { padding: clamp(2.5rem,6vw,4.5rem) 0; min-height: 50vh; }
 .page h1 { font-size: clamp(2rem,5vw,3rem); color: var(--cream); margin-bottom: 0.4rem; }
