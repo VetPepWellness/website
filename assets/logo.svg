@@ -1,0 +1,23 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vet Pep Wellness logo">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e6cd86"/>
+      <stop offset="0.5" stop-color="#c9a14a"/>
+      <stop offset="1" stop-color="#a8842f"/>
+    </linearGradient>
+  </defs>
+  <!-- decorative top sprig -->
+  <path d="M60 14c0-4 2-7 5-9-1 4-1 7-5 9z" fill="url(#gold)"/>
+  <path d="M60 14c0-4-2-7-5-9 1 4 1 7 5 9z" fill="url(#gold)"/>
+  <circle cx="60" cy="8" r="2.4" fill="url(#gold)"/>
+  <!-- V monogram -->
+  <path d="M34 30 L60 86 L86 30 L77 30 L60 67 L43 30 Z" fill="url(#gold)"/>
+  <!-- laurel leaves -->
+  <g fill="url(#gold)">
+    <ellipse cx="44" cy="92" rx="3.4" ry="6.6" transform="rotate(35 44 92)"/>
+    <ellipse cx="51" cy="98" rx="3" ry="5.8" transform="rotate(28 51 98)"/>
+    <ellipse cx="76" cy="92" rx="3.4" ry="6.6" transform="rotate(-35 76 92)"/>
+    <ellipse cx="69" cy="98" rx="3" ry="5.8" transform="rotate(-28 69 98)"/>
+  </g>
+  <path d="M48 100 Q60 108 72 100" stroke="url(#gold)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+</svg>
