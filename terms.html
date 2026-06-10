@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms &amp; Conditions — Vet Pep Wellness</title>
+  <meta name="description" content="Terms and conditions for purchasing from Vet Pep Wellness. Research use only." />
+  <meta name="theme-color" content="#07211d" />
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html" aria-label="Vet Pep Wellness home">
+        <img src="assets/logo.svg" alt="" class="brand-mark" width="46" height="46" />
+        <span class="brand-text"><span class="brand-name">Vet Pep Wellness</span><span class="brand-tag">Peps and More</span></span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="index.html#shop">Shop</a>
+        <a href="coa.html">COA / Testing</a>
+        <a href="terms.html">Terms</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container narrow">
+      <p class="eyebrow">The Fine Print</p>
+      <h1>Terms &amp; Conditions</h1>
+      <p><strong>Please review this template carefully and replace it with terms written
+      or reviewed for your business and jurisdiction. This is not legal advice.</strong></p>
+
+      <h2>1. Research Use Only</h2>
+      <p>All products sold by Vet Pep Wellness are intended strictly for laboratory and
+      research purposes. They are not dietary supplements, drugs, or medications, and are
+      not intended to diagnose, treat, cure, or prevent any disease. They are not for human
+      or veterinary consumption.</p>
+
+      <h2>2. Eligibility</h2>
+      <p>You must be at least 21 years old to purchase. By ordering you confirm you are a
+      qualified buyer and that you will comply with all applicable laws and regulations.</p>
+
+      <h2>3. Orders &amp; Payment</h2>
+      <p>Order totals, shipping costs, and accepted payment methods are confirmed during
+      order review. We reserve the right to refuse or cancel any order.</p>
+
+      <h2>4. Shipping</h2>
+      <p>Processing and delivery timelines are provided at order confirmation. <em>[Add your
+      shipping policy.]</em></p>
+
+      <h2>5. Returns &amp; Refunds</h2>
+      <p><em>[Add your return / refund policy here.]</em></p>
+
+      <h2>6. Limitation of Liability</h2>
+      <p>The buyer assumes all responsibility and liability for the proper, safe, and legal
+      use of any product purchased.</p>
+
+      <p><a class="btn btn-ghost" href="index.html#shop">← Back to Shop</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container"><p class="copyright">© <span id="year"></span> Vet Pep Wellness. All rights reserved. Research use only.</p></div>
+  </footer>
+  <script>document.getElementById("year").textContent=new Date().getFullYear();
+    document.querySelector(".nav-toggle").addEventListener("click",function(){document.querySelector(".nav").classList.toggle("open");});</script>
+</body>
+</html>
