@@ -6,7 +6,6 @@ const CATEGORIES = [
   { id: "gero",   name: "Geroprotectors",     icon: "⏳", blurb: "Longevity & anti-aging",        color: "#9fc3a8" },
   { id: "skin",   name: "Skin & Regeneration",icon: "✦", blurb: "Repair, recovery & glow",        color: "#d9a679" },
   { id: "growth", name: "Growth & Recovery",  icon: "❖", blurb: "GH support & recovery",           color: "#cbb06a" },
-  { id: "perf",   name: "Performance",        icon: "⚡", blurb: "Performance support",            color: "#c8924f" },
   { id: "supply", name: "Wellness & Supplies",icon: "✚", blurb: "Vitamins & extras",              color: "#bcae8a" },
 ];
 
@@ -20,9 +19,6 @@ const PRODUCTS = [
   { id: "glow70",  cat: "skin",   name: "Glow (BBG70)",         dose: "70 mg",        price: 195, best: true },
   { id: "tesa10",  cat: "growth", name: "Tesamorelin",          dose: "10 mg",        price: 160 },
   { id: "cjcipa",  cat: "growth", name: "CJC-1295 (no DAC) + Ipamorelin", dose: "5 mg + 5 mg", price: 115, best: true },
-  { id: "teste250",cat: "perf",   name: "Test-E",               dose: "250",          price: 85 },
-  { id: "teste400",cat: "perf",   name: "Test-E",               dose: "400",          price: 130 },
-  { id: "testc250",cat: "perf",   name: "Test-C",               dose: "250",          price: 85 },
   { id: "lipoc",   cat: "supply", name: "Lipo-C with B12",      dose: "",             price: 60 },
 ];
 
