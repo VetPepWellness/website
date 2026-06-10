@@ -1,25 +1,178 @@
 // ===== Vet Pep Wellness — storefront =====
+// NOTE: Catalogue transcribed from the product sheets. Prices marked with a
+// trailing "// verify" in the data were read from a dense, low-res photo —
+// confirm those figures. Edit anything here freely; the site auto-updates.
 
-// ---- Categories (edit freely) ----
+// ---- Categories ----
 const CATEGORIES = [
-  { id: "glp1",   name: "GLP-1 Analogs",      icon: "⚖", blurb: "Metabolic & weight management", color: "#e3c478" },
-  { id: "gero",   name: "Geroprotectors",     icon: "⏳", blurb: "Longevity & anti-aging",        color: "#9fc3a8" },
-  { id: "skin",   name: "Skin & Regeneration",icon: "✦", blurb: "Repair, recovery & glow",        color: "#d9a679" },
-  { id: "growth", name: "Growth & Recovery",  icon: "❖", blurb: "GH support & recovery",           color: "#cbb06a" },
-  { id: "supply", name: "Wellness & Supplies",icon: "✚", blurb: "Vitamins & extras",              color: "#bcae8a" },
+  { id: "glp1",     name: "GLP-1 & Weight Loss",     icon: "⚖", blurb: "Appetite, glucose & metabolic fat loss", color: "#e3c478" },
+  { id: "gh",       name: "Growth Hormone & Body",   icon: "❖", blurb: "GH / IGF-1 & body composition",          color: "#cbb06a" },
+  { id: "repair",   name: "Tissue Repair & Recovery",icon: "✦", blurb: "Injury recovery, skin & wound healing",   color: "#d9a679" },
+  { id: "longevity",name: "Energy & Longevity",      icon: "⏳", blurb: "Mitochondria, antioxidants & anti-aging", color: "#9fc3a8" },
+  { id: "immune",   name: "Immune & Inflammation",   icon: "✚", blurb: "Immune support & inflammation",           color: "#a7c4b5" },
+  { id: "brain",    name: "Brain, Mood & Sleep",     icon: "☾", blurb: "Focus, mood, sleep & nerve support",      color: "#c2b2d8" },
+  { id: "sexual",   name: "Sexual & Hormonal",       icon: "♡", blurb: "Libido & hormonal signaling",             color: "#dba6a6" },
+  { id: "supply",   name: "Supplies",                icon: "⚗", blurb: "Reconstitution & extras",                 color: "#bcae8a" },
 ];
 
-// ---- Products (from the flyer). Edit prices/names/dosages here. ----
+// ---- Products. Each has one or more dosage variants {dose, price}. ----
 const PRODUCTS = [
-  { id: "reta30",  cat: "glp1",   name: "Retatrutide",          dose: "30 mg",        price: 175, best: true },
-  { id: "tirz40",  cat: "glp1",   name: "Tirzepatide",          dose: "40 mg",        price: 120, best: true },
-  { id: "nad1000", cat: "gero",   name: "NAD+",                 dose: "1000 mg",      price: 125 },
-  { id: "ghkcu",   cat: "gero",   name: "GHK-Cu",               dose: "100 mg",       price: 70 },
-  { id: "klow80",  cat: "skin",   name: "Klow",                 dose: "80 mg",        price: 195 },
-  { id: "glow70",  cat: "skin",   name: "Glow (BBG70)",         dose: "70 mg",        price: 195, best: true },
-  { id: "tesa10",  cat: "growth", name: "Tesamorelin",          dose: "10 mg",        price: 160 },
-  { id: "cjcipa",  cat: "growth", name: "CJC-1295 (no DAC) + Ipamorelin", dose: "5 mg + 5 mg", price: 115, best: true },
-  { id: "lipoc",   cat: "supply", name: "Lipo-C with B12",      dose: "",             price: 60 },
+  // ===== GLP-1 & Weight Loss =====
+  { id: "tirzepatide", cat: "glp1", name: "Tirzepatide", best: true,
+    info: "Dual GLP-1/GIP — very strong appetite control, weight loss and glucose support.",
+    variants: [{dose:"5 mg",price:50},{dose:"10 mg",price:70},{dose:"15 mg",price:80},{dose:"20 mg",price:90},{dose:"30 mg",price:105},{dose:"40 mg",price:120},{dose:"50 mg",price:140},{dose:"60 mg",price:165}] },
+  { id: "semaglutide", cat: "glp1", name: "Semaglutide", best: true,
+    info: "GLP-1 — appetite control, fullness and glucose control.",
+    variants: [{dose:"5 mg",price:45},{dose:"10 mg",price:60},{dose:"15 mg",price:70},{dose:"20 mg",price:80},{dose:"30 mg",price:95}] },
+  { id: "retatrutide", cat: "glp1", name: "Retatrutide", best: true,
+    info: "Triple GLP-1/GIP/glucagon — the strongest fat-loss peptide in the lineup.",
+    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:85},{dose:"15 mg",price:100},{dose:"20 mg",price:135},{dose:"30 mg",price:175},{dose:"50 mg",price:225},{dose:"60 mg",price:265}] },
+  { id: "cagrilintide", cat: "glp1", name: "Cagrilintide",
+    info: "Amylin analog — increases fullness and reduces appetite.",
+    variants: [{dose:"5 mg",price:110},{dose:"10 mg",price:165}] },
+  { id: "cagri-sema", cat: "glp1", name: "Cagrilintide + Semaglutide",
+    info: "Combo for stronger hunger control than semaglutide alone.",
+    variants: [{dose:"5 mg + 5 mg",price:185}] },
+  { id: "aod9604", cat: "glp1", name: "AOD-9604",
+    info: "HGH fragment aimed at fat metabolism; gentler than the GLP-1 class.",
+    variants: [{dose:"5 mg",price:95},{dose:"10 mg",price:185}] }, // verify
+  { id: "amino1mq", cat: "glp1", name: "5-Amino-1MQ",
+    info: "Research compound targeting the NNMT/NAD fat-metabolism pathway.",
+    variants: [{dose:"10 mg",price:50},{dose:"60 mg",price:95}] }, // verify
+  { id: "lipoc-b12", cat: "glp1", name: "Lipo-C with B12",
+    info: "Lipotropic support plus B12 to help energy and fat metabolism.",
+    variants: [{dose:"10 mL",price:60}] },
+  { id: "lipoc", cat: "glp1", name: "Lipo-C (no B12)",
+    info: "Lipotropic support without B12.",
+    variants: [{dose:"10 mL",price:60}] },
+  { id: "lemonbottle", cat: "glp1", name: "Lemon Bottle",
+    info: "Local cosmetic fat-dissolving product (not whole-body fat loss).",
+    variants: [{dose:"10 mL",price:60}] }, // verify
+  { id: "b12", cat: "glp1", name: "Vitamin B12",
+    info: "B12 for general energy support.",
+    variants: [{dose:"10 mL",price:45}] }, // verify
+
+  // ===== Growth Hormone & Body Composition =====
+  { id: "tesamorelin", cat: "gh", name: "Tesamorelin",
+    info: "Raises growth hormone to help reduce visceral belly fat.",
+    variants: [{dose:"5 mg",price:95},{dose:"10 mg",price:160},{dose:"15 mg",price:195}] },
+  { id: "cjc-ipa", cat: "gh", name: "CJC-1295 (no DAC) + Ipamorelin", best: true,
+    info: "Popular GH-pulse stack — supports sleep, recovery and body composition.",
+    variants: [{dose:"5 mg + 5 mg",price:115}] },
+  { id: "cjc-dac", cat: "gh", name: "CJC-1295 with DAC",
+    info: "Longer-acting GH/IGF-1 signal.",
+    variants: [{dose:"5 mg",price:90}] },
+  { id: "cjc-nodac", cat: "gh", name: "CJC-1295 without DAC",
+    info: "Shorter GH pulse; usually stacked with ipamorelin.",
+    variants: [{dose:"10 mg",price:135}] },
+  { id: "ipamorelin", cat: "gh", name: "Ipamorelin",
+    info: "Gentle GH secretagogue — clean, but weaker on its own.",
+    variants: [{dose:"5 mg",price:50},{dose:"10 mg",price:70}] },
+  { id: "sermorelin", cat: "gh", name: "Sermorelin Acetate",
+    info: "Tells the pituitary to release growth hormone naturally.",
+    variants: [{dose:"5 mg",price:80},{dose:"10 mg",price:145}] }, // verify
+
+  // ===== Tissue Repair & Recovery =====
+  { id: "bpc157", cat: "repair", name: "BPC-157",
+    info: "Injury-repair peptide — supports tendon, gut and general healing.",
+    variants: [{dose:"5 mg",price:45},{dose:"10 mg",price:60}] },
+  { id: "tb500", cat: "repair", name: "TB-500 (Thymosin Beta-4)",
+    info: "Recovery and repair — supports flexibility and healing.",
+    variants: [{dose:"5 mg",price:60},{dose:"10 mg",price:120}] },
+  { id: "bpc-tb-5", cat: "repair", name: "BPC-157 + TB-500 (5 mg + 5 mg)",
+    info: "Repair combo for faster recovery, smaller vial.",
+    variants: [{dose:"10 mg",price:105}] },
+  { id: "bpc-tb-10", cat: "repair", name: "BPC-157 + TB-500 (10 mg + 10 mg)",
+    info: "Same repair combo, higher total supply.",
+    variants: [{dose:"20 mg",price:180}] },
+  { id: "glow", cat: "repair", name: "Glow (BPC-157 + GHK-Cu + TB-500)", best: true,
+    info: "Skin + tissue-repair blend for recovery and glow.",
+    variants: [{dose:"70 mg",price:195}] },
+  { id: "klow", cat: "repair", name: "KLOW (GHK-Cu + TB-500 + BPC-157 + KPV)", best: true,
+    info: "Broadest repair blend — skin, tissue, tendon and inflammation.",
+    variants: [{dose:"60 mg",price:195}] }, // verify total mg
+  { id: "ghkcu", cat: "repair", name: "GHK-Cu",
+    info: "Copper peptide — skin repair, collagen and anti-aging.",
+    variants: [{dose:"50 mg",price:50},{dose:"100 mg",price:75}] },
+  { id: "kpv", cat: "repair", name: "KPV",
+    info: "Calms inflammation — gut and broad support.",
+    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:70}] },
+  { id: "ll37", cat: "repair", name: "LL-37",
+    info: "Antimicrobial immune-defense and repair peptide.",
+    variants: [{dose:"5 mg",price:75}] }, // verify
+
+  // ===== Energy & Longevity =====
+  { id: "nad", cat: "longevity", name: "NAD+",
+    info: "Cellular energy and longevity support.",
+    variants: [{dose:"100 mg",price:55},{dose:"500 mg",price:80},{dose:"1000 mg",price:125}] },
+  { id: "glutathione", cat: "longevity", name: "Glutathione",
+    info: "Master antioxidant — detox and redox balance.",
+    variants: [{dose:"600 mg",price:55}] },
+  { id: "ss31", cat: "longevity", name: "SS-31 (Elamipretide)",
+    info: "Targets mitochondria for cellular energy support.",
+    variants: [{dose:"10 mg",price:85}] }, // verify
+  { id: "motsc", cat: "longevity", name: "MOTS-C",
+    info: "Mitochondrial/metabolic peptide — energy and endurance.",
+    variants: [{dose:"5 mg",price:100},{dose:"10 mg",price:165}] }, // verify
+  { id: "epithalon", cat: "longevity", name: "Epithalon",
+    info: "Longevity, sleep and circadian telomere-research peptide.",
+    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:115}] }, // verify
+
+  // ===== Immune & Inflammation =====
+  { id: "thymosin-a1", cat: "immune", name: "Thymosin Alpha-1",
+    info: "Strong immune-support peptide — T-cell immune signaling.",
+    variants: [{dose:"5 mg",price:95},{dose:"10 mg",price:185}] }, // verify
+  { id: "thymalin", cat: "immune", name: "Thymalin",
+    info: "Immune-aging and restorative thymus peptide.",
+    variants: [{dose:"10 mg",price:95}] }, // verify
+  { id: "vip", cat: "immune", name: "VIP",
+    info: "Calms inflammation; affects blood flow and neuroimmune signaling.",
+    variants: [{dose:"5 mg",price:115}] }, // verify
+  { id: "ara290", cat: "immune", name: "Ara-290",
+    info: "Nerve/tissue-protective; anti-inflammatory repair peptide.",
+    variants: [{dose:"10 mg",price:115}] }, // verify
+
+  // ===== Brain, Mood & Sleep =====
+  { id: "cerebrolysin", cat: "brain", name: "Cerebrolysin",
+    info: "Neuro-recovery, cognition and brain support.",
+    variants: [{dose:"10 mL",price:65}] }, // verify
+  { id: "semax", cat: "brain", name: "Semax",
+    info: "Focus, learning, mental energy and neuroprotection.",
+    variants: [{dose:"30 mg",price:95}] }, // verify
+  { id: "selank", cat: "brain", name: "Selank",
+    info: "Calm focus, stress control and anxiety support.",
+    variants: [{dose:"30 mg",price:95}] }, // verify
+  { id: "dsip", cat: "brain", name: "DSIP",
+    info: "Deep-sleep and sleep-quality support.",
+    variants: [{dose:"5 mg",price:60}] }, // verify
+
+  // ===== Sexual & Hormonal =====
+  { id: "pt141", cat: "sexual", name: "PT-141 (Bremelanotide)",
+    info: "Direct libido and arousal peptide.",
+    variants: [{dose:"10 mg",price:65}] },
+  { id: "hcg", cat: "sexual", name: "HCG",
+    info: "LH-like signal — supports testosterone and fertility.",
+    variants: [{dose:"5000 iu",price:85}] }, // verify
+  { id: "kisspeptin", cat: "sexual", name: "Kisspeptin-10",
+    info: "Stimulates the GnRH → LH/FSH hormone chain.",
+    variants: [{dose:"5 mg",price:65},{dose:"10 mg",price:95}] }, // verify
+  { id: "mt2", cat: "sexual", name: "Melanotan II (MT-2)",
+    info: "Tanning plus libido effect.",
+    variants: [{dose:"10 mg",price:55}] }, // verify
+  { id: "oxytocin", cat: "sexual", name: "Oxytocin Acetate",
+    info: "Bonding, social and neuroendocrine peptide.",
+    variants: [{dose:"10 mg",price:55}] }, // verify
+  { id: "mt1", cat: "sexual", name: "Melanotan I / Afamelanotide",
+    info: "Pigmentation and photoprotection tanning peptide.",
+    variants: [{dose:"10 mg",price:65}] }, // verify
+
+  // ===== Supplies =====
+  { id: "bacwater", cat: "supply", name: "BAC Water (Bacteriostatic)",
+    info: "For reconstituting peptides.",
+    variants: [{dose:"3 mL",price:10},{dose:"10 mL",price:15}] }, // verify
+  { id: "aceticwater", cat: "supply", name: "Acetic Acid Water",
+    info: "Dilute acetic acid for reconstitution.",
+    variants: [{dose:"3 mL",price:11},{dose:"10 mL",price:15}] }, // verify
 ];
 
 // ---- Your contact details (used for one-tap order sending) ----
@@ -29,6 +182,13 @@ const ORDER_EMAIL = "hello@vetpepwellness.com";
 
 const catById = (id) => CATEGORIES.find((c) => c.id === id) || {};
 const money = (n) => "$" + n.toLocaleString();
+const findProduct = (id) => PRODUCTS.find((p) => p.id === id);
+function variantPrice(id, dose) {
+  const p = findProduct(id); if (!p) return 0;
+  const v = p.variants.find((v) => v.dose === dose) || p.variants[0];
+  return v ? v.price : 0;
+}
+const fromPrice = (p) => Math.min(...p.variants.map((v) => v.price));
 
 // ---- Generated vial graphic (no photos needed) ----
 function vialSVG(product, small) {
@@ -40,8 +200,7 @@ function vialSVG(product, small) {
     <rect x="16" y="14" width="28" height="92" rx="9" fill="#0d3a33" stroke="${c}" stroke-width="1.4"/>
     <rect x="16" y="14" width="28" height="92" rx="9" fill="url(#glass-${product.id})"/>
     <rect x="18" y="44" width="24" height="40" rx="3" fill="${c}" opacity="0.92"/>
-    ${small ? "" : `<text x="30" y="60" text-anchor="middle" font-family="Jost,sans-serif" font-size="6.5" font-weight="600" fill="#20180a">${label}</text>`}
-    ${small ? "" : `<text x="30" y="70" text-anchor="middle" font-family="Jost,sans-serif" font-size="5" fill="#3a2d10">${product.dose || "VPW"}</text>`}
+    ${small ? "" : `<text x="30" y="62" text-anchor="middle" font-family="Jost,sans-serif" font-size="6.2" font-weight="600" fill="#20180a">${label}</text>`}
     <defs>
       <linearGradient id="cap-${product.id}" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="#e6cd86"/><stop offset="1" stop-color="#a8842f"/>
@@ -55,34 +214,44 @@ function vialSVG(product, small) {
   </svg>`;
 }
 
-// ---- Cart state (persisted) ----
+// ---- Cart state (persisted). Keyed by "id|dose". ----
 const CART_KEY = "vpw_cart";
 let cart = loadCart();
 function loadCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || {}; } catch { return {}; } }
 function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 function cartCount() { return Object.values(cart).reduce((a, b) => a + b, 0); }
+function parseKey(key) { const i = key.lastIndexOf("|"); return { id: key.slice(0, i), dose: key.slice(i + 1) }; }
 function cartSubtotal() {
-  return Object.entries(cart).reduce((sum, [id, qty]) => {
-    const p = PRODUCTS.find((x) => x.id === id);
-    return sum + (p ? p.price * qty : 0);
+  return Object.entries(cart).reduce((sum, [key, qty]) => {
+    const { id, dose } = parseKey(key);
+    return sum + variantPrice(id, dose) * qty;
   }, 0);
 }
 
-function addToCart(id) {
-  cart[id] = (cart[id] || 0) + 1;
+function addToCart(id, dose) {
+  const key = `${id}|${dose}`;
+  cart[key] = (cart[key] || 0) + 1;
   saveCart(); renderCart(); updateCartCount();
   openCart();
 }
-function setQty(id, qty) {
-  if (qty <= 0) delete cart[id]; else cart[id] = qty;
+function setQty(key, qty) {
+  if (qty <= 0) delete cart[key]; else cart[key] = qty;
   saveCart(); renderCart(); updateCartCount();
 }
 
 // ---- Renderers ----
 function productCard(p) {
   const cat = catById(p.cat);
+  const multi = p.variants.length > 1;
+  const first = p.variants[0];
+  const doseStr = p.variants.map((v) => v.dose).join(" ").toLowerCase();
+  const select = multi
+    ? `<select class="dose-select" data-pid="${p.id}" aria-label="Select dosage">
+         ${p.variants.map((v) => `<option value="${v.dose}" data-price="${v.price}">${v.dose} — ${money(v.price)}</option>`).join("")}
+       </select>`
+    : `<span class="product-dose">${first.dose || "each"}</span>`;
   return `
-  <article class="product-card reveal" data-cat="${p.cat}" data-name="${p.name.toLowerCase()} ${p.dose.toLowerCase()}">
+  <article class="product-card reveal" data-cat="${p.cat}" data-name="${(p.name + " " + doseStr).toLowerCase()}">
     <div class="product-media">
       <span class="product-tag" style="background:${cat.color}">${cat.name}</span>
       ${p.best ? '<span class="product-badge">Best Seller</span>' : ""}
@@ -90,9 +259,10 @@ function productCard(p) {
     </div>
     <div class="product-body">
       <h3 class="product-name">${p.name}</h3>
-      ${p.dose ? `<span class="product-dose">${p.dose}</span>` : ""}
+      ${p.info ? `<p class="product-info-text">${p.info}</p>` : ""}
+      ${select}
       <div class="product-row">
-        <span class="product-price">${money(p.price)}</span>
+        <span class="product-price" id="price-${p.id}">${money(first.price)}</span>
         <button class="add-btn" data-add="${p.id}">Add to Cart</button>
       </div>
     </div>
@@ -134,29 +304,30 @@ function renderCart() {
   const wrap = document.getElementById("cart-items");
   const checkoutBtn = document.getElementById("checkout-btn");
   if (!wrap) return;
-  const ids = Object.keys(cart);
-  if (!ids.length) {
+  const keys = Object.keys(cart);
+  if (!keys.length) {
     wrap.innerHTML = `<p class="cart-empty">Your cart is empty.<br>Add some peps and more.</p>`;
     document.getElementById("cart-subtotal").textContent = "$0";
     if (checkoutBtn) checkoutBtn.disabled = true;
     return;
   }
-  wrap.innerHTML = ids.map((id) => {
-    const p = PRODUCTS.find((x) => x.id === id); if (!p) return "";
-    const qty = cart[id];
+  wrap.innerHTML = keys.map((key) => {
+    const { id, dose } = parseKey(key);
+    const p = findProduct(id); if (!p) return "";
+    const qty = cart[key];
     return `
     <div class="cart-item">
       <div class="cart-item-media">${vialSVG(p, true)}</div>
       <div class="cart-item-info">
-        <div class="cart-item-name">${p.name}${p.dose ? " · " + p.dose : ""}</div>
-        <div class="cart-item-price">${money(p.price)} each</div>
+        <div class="cart-item-name">${p.name}${dose ? " · " + dose : ""}</div>
+        <div class="cart-item-price">${money(variantPrice(id, dose))} each</div>
       </div>
       <div class="qty">
-        <button data-dec="${id}" aria-label="Decrease">−</button>
+        <button data-dec="${key}" aria-label="Decrease">−</button>
         <span>${qty}</span>
-        <button data-inc="${id}" aria-label="Increase">+</button>
+        <button data-inc="${key}" aria-label="Increase">+</button>
       </div>
-      <button class="cart-item-remove" data-remove="${id}" aria-label="Remove">✕</button>
+      <button class="cart-item-remove" data-remove="${key}" aria-label="Remove">✕</button>
     </div>`;
   }).join("");
   document.getElementById("cart-subtotal").textContent = money(cartSubtotal());
@@ -184,21 +355,20 @@ function closeCart() {
 const CUST_KEY = "vpw_customer";
 
 function openCheckout() {
-  const ids = Object.keys(cart); if (!ids.length) return;
+  const keys = Object.keys(cart); if (!keys.length) return;
   const summary = document.getElementById("checkout-summary");
   summary.innerHTML =
-    ids.map((id) => {
-      const p = PRODUCTS.find((x) => x.id === id);
-      return `<div class="checkout-line"><span>${p.name}${p.dose ? " " + p.dose : ""} × ${cart[id]}</span><span>${money(p.price * cart[id])}</span></div>`;
+    keys.map((key) => {
+      const { id, dose } = parseKey(key);
+      const p = findProduct(id);
+      return `<div class="checkout-line"><span>${p.name}${dose ? " " + dose : ""} × ${cart[key]}</span><span>${money(variantPrice(id, dose) * cart[key])}</span></div>`;
     }).join("") +
     `<div class="checkout-line total"><span>Subtotal</span><span>${money(cartSubtotal())}</span></div>`;
-  // Prefill saved customer details for fast repeat orders
   try {
     const saved = JSON.parse(localStorage.getItem(CUST_KEY)) || {};
     const f = document.getElementById("checkout-form");
     ["name", "contact", "address"].forEach((k) => { if (saved[k]) f[k].value = saved[k]; });
   } catch {}
-  // Reset to form view
   document.getElementById("checkout-form").hidden = false;
   document.getElementById("order-channels").hidden = true;
   document.getElementById("checkout-overlay").hidden = false;
@@ -206,9 +376,10 @@ function openCheckout() {
 function closeCheckout() { document.getElementById("checkout-overlay").hidden = true; }
 
 function buildOrderText(f) {
-  const lines = Object.keys(cart).map((id) => {
-    const p = PRODUCTS.find((x) => x.id === id);
-    return `• ${p.name}${p.dose ? " " + p.dose : ""} x${cart[id]} = ${money(p.price * cart[id])}`;
+  const lines = Object.keys(cart).map((key) => {
+    const { id, dose } = parseKey(key);
+    const p = findProduct(id);
+    return `• ${p.name}${dose ? " " + dose : ""} x${cart[key]} = ${money(variantPrice(id, dose) * cart[key])}`;
   }).join("\n");
   return (
     `New Order — Vet Pep Wellness\n${lines}\nSubtotal: ${money(cartSubtotal())}\n` +
@@ -221,29 +392,20 @@ function buildOrderText(f) {
 function submitOrder(e) {
   e.preventDefault();
   const f = e.target;
-  // Save details so repeat orders are one tap
   try {
     localStorage.setItem(CUST_KEY, JSON.stringify({ name: f.name.value, contact: f.contact.value, address: f.address.value }));
   } catch {}
-
   const text = buildOrderText(f);
   const enc = encodeURIComponent(text);
   const subject = encodeURIComponent(`New Order — ${f.name.value}`);
-  const body = encodeURIComponent(text);
-
-  // Wire up the one-tap send channels (customer picks whatever's easiest)
   document.getElementById("ch-sms").href = `sms:${ORDER_PHONE}?&body=${enc}`;
   document.getElementById("ch-wa").href = `https://wa.me/${ORDER_PHONE}?text=${enc}`;
-  document.getElementById("ch-email").href = `mailto:${ORDER_EMAIL}?subject=${subject}&body=${body}`;
+  document.getElementById("ch-email").href = `mailto:${ORDER_EMAIL}?subject=${subject}&body=${enc}`;
   document.getElementById("ch-copy").onclick = () => {
     navigator.clipboard?.writeText(text);
     document.getElementById("ch-copy").textContent = "✓ Copied";
   };
-
-  // ── PAYMENT INTEGRATION POINT ───────────────────────────────────────────
-  // Orders are sent to you for confirmation (works on free static hosting,
-  // no deception, no processor risk). To add legitimate card/crypto checkout
-  // later, trigger your processor's hosted checkout here instead.
+  // ── PAYMENT INTEGRATION POINT ──────────────────────────────────────────
   document.getElementById("checkout-form").hidden = true;
   document.getElementById("order-channels").hidden = false;
 }
@@ -286,7 +448,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
 
-  // Mobile nav
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".nav");
   toggle?.addEventListener("click", () => {
@@ -294,12 +455,25 @@ document.addEventListener("DOMContentLoaded", () => {
     toggle.setAttribute("aria-expanded", String(open));
   });
 
+  // Dosage selector updates the displayed price
+  document.addEventListener("change", (e) => {
+    const sel = e.target.closest(".dose-select");
+    if (!sel) return;
+    const opt = sel.options[sel.selectedIndex];
+    const priceEl = document.getElementById(`price-${sel.dataset.pid}`);
+    if (priceEl) priceEl.textContent = money(Number(opt.dataset.price));
+  });
+
   // Delegated clicks
   document.addEventListener("click", (e) => {
     const t = e.target.closest("[data-add],[data-jump],[data-inc],[data-dec],[data-remove],[data-filter]");
     if (!t) return;
     if (t.dataset.add) {
-      addToCart(t.dataset.add);
+      const card = t.closest(".product-card");
+      const sel = card?.querySelector(".dose-select");
+      const p = findProduct(t.dataset.add);
+      const dose = sel ? sel.value : (p ? p.variants[0].dose : "");
+      addToCart(t.dataset.add, dose);
       t.textContent = "Added ✓"; t.classList.add("added");
       setTimeout(() => { t.textContent = "Add to Cart"; t.classList.remove("added"); }, 1200);
     } else if (t.dataset.jump) {
@@ -317,7 +491,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cart open/close
   document.getElementById("cart-btn")?.addEventListener("click", openCart);
   document.getElementById("cart-close")?.addEventListener("click", closeCart);
   document.getElementById("cart-overlay")?.addEventListener("click", closeCart);
@@ -326,13 +499,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("checkout-overlay")?.addEventListener("click", (e) => { if (e.target.id === "checkout-overlay") closeCheckout(); });
   document.getElementById("checkout-form")?.addEventListener("submit", submitOrder);
 
-  // Search
   document.getElementById("search")?.addEventListener("input", () => {
     applyFilters();
     if (document.getElementById("search").value) document.getElementById("shop").scrollIntoView({ behavior: "smooth" });
   });
 
-  // Newsletter (demo)
   document.getElementById("newsletter-form")?.addEventListener("submit", (e) => {
     e.preventDefault();
     document.getElementById("newsletter-hint").textContent = "Thanks! You're on the list. 🎉";
