@@ -133,6 +133,10 @@ img { display: block; max-width: 100%; }
 .filter-pill:hover { color: var(--gold-light); }
 .filter-pill.active { background: linear-gradient(135deg, var(--gold-light), var(--gold-deep)); color: #2a2107; border-color: transparent; font-weight: 600; }
 .no-results { text-align: center; color: var(--text-muted); padding: 2rem 0; }
+.catalog-callout { margin-top: 2.6rem; text-align: center; border: 1px solid var(--line); border-radius: var(--radius); padding: 2.2rem 1.5rem; background: radial-gradient(600px 200px at 50% 0%, rgba(201,161,74,0.08), transparent 70%), rgba(255,255,255,0.02); }
+.catalog-callout h3 { font-size: 1.7rem; color: var(--cream); margin-bottom: 0.5rem; }
+.catalog-callout p { color: var(--text-muted); max-width: 620px; margin: 0 auto 1.4rem; }
+.catalog-callout strong { color: var(--gold-light); }
 
 /* ===== Disclaimer banner ===== */
 .disclaimer-banner { background: var(--emerald-darkest); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.6rem 0; }
