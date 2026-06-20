@@ -78,19 +78,19 @@ const PRODUCTS = [
 ];
 
 // ---- Salesperson / referral codes ----
-// Add your reps here as  CODE: "Name".  A valid code = free BAC water + sale credit.
-// (The code + rep name are included in every order so you can track who sold what.)
-const REPS = {
-  // CODE (uppercase) : "Salesperson name"
-  "Z11111": "Rep Z11111",
-};
+// Just the codes (uppercase) — you track which rep each one belongs to.
+// A valid code = free BAC water + the code is stamped on the order.
+const REPS = ["Z11111"];
 const BAC_FREEBIE = { id: "bacwater", dose: "3 mL" }; // free item granted with a valid code
 const NO_BAC_NEEDED = new Set(["bacwater", "lipoc-b12"]); // items that don't require BAC water
 
-// ---- Your contact details (used for one-tap order sending) ----
-// TODO: replace with your real number (digits only, incl. country code) and email.
-const ORDER_PHONE = "10000000000";          // e.g. "18065551234"
-const ORDER_EMAIL = "hello@vetpepwellness.com";
+// ---- Your contact details ----
+const ORDER_EMAIL = "vetpepwellness@gmail.com";
+// To add WhatsApp/Text ordering later, set ORDER_PHONE (digits only, incl. country code).
+const ORDER_PHONE = "";
+// Order tracking + refill reminders: paste your Google Apps Script Web App URL
+// here to auto-save every order to your Google Sheet (see backend/CRM-SETUP.md).
+const ORDER_ENDPOINT = "";
 
 const catById = (id) => CATEGORIES.find((c) => c.id === id) || {};
 const money = (n) => "$" + n.toLocaleString();
@@ -269,7 +269,6 @@ function closeCart() {
 // ---- Checkout ----
 const CUST_KEY = "vpw_customer";
 let appliedCode = "";   // valid referral code currently applied
-let appliedRep = "";    // rep name for the applied code
 
 function cartNeedsBac() {
   return Object.keys(cart).some((key) => !NO_BAC_NEEDED.has(parseKey(key).id));
@@ -317,13 +316,13 @@ function applyReferral() {
   const input = document.getElementById("referral-code");
   const status = document.getElementById("referral-status");
   const code = (input.value || "").trim().toUpperCase();
-  if (!code) { appliedCode = ""; appliedRep = ""; status.textContent = ""; renderCheckoutSummary(); return; }
-  if (REPS[code]) {
-    appliedCode = code; appliedRep = REPS[code];
+  if (!code) { appliedCode = ""; status.textContent = ""; renderCheckoutSummary(); return; }
+  if (REPS.includes(code)) {
+    appliedCode = code;
     status.className = "referral-status ok";
     status.textContent = `✓ Code applied — free BAC water (3 mL) added with your order.`;
   } else {
-    appliedCode = ""; appliedRep = "";
+    appliedCode = "";
     status.className = "referral-status bad";
     status.textContent = "Code not recognized — no problem, your order will still go through.";
   }
@@ -340,7 +339,7 @@ function buildOrderText(f) {
     const fb = findProduct(BAC_FREEBIE.id);
     lines.push(`• ${fb.name} ${BAC_FREEBIE.dose} x1 = FREE (referral reward)`);
   }
-  const referralLine = appliedCode ? `\nReferral code: ${appliedCode} — Sold by: ${appliedRep}` : "";
+  const referralLine = appliedCode ? `\nReferral / Salesperson code: ${appliedCode}` : "";
   return (
     `New Order — Vet Pep Wellness\n${lines.join("\n")}\n` +
     `Subtotal: ${money(cartSubtotal())}\n` +
@@ -361,9 +360,28 @@ function submitOrder(e) {
   const text = buildOrderText(f);
   const enc = encodeURIComponent(text);
   const subject = encodeURIComponent(`New Order — ${f.name.value}`);
-  document.getElementById("ch-sms").href = `sms:${ORDER_PHONE}?&body=${enc}`;
-  document.getElementById("ch-wa").href = `https://wa.me/${ORDER_PHONE}?text=${enc}`;
   document.getElementById("ch-email").href = `mailto:${ORDER_EMAIL}?subject=${subject}&body=${enc}`;
+
+  // Save the order to your Google Sheet (for customer/order tracking + refill
+  // reminders). Fire-and-forget; if the endpoint isn't set, this is skipped.
+  if (ORDER_ENDPOINT) {
+    const items = Object.keys(cart).map((key) => {
+      const { id, dose } = parseKey(key);
+      const p = findProduct(id);
+      return `${p.name}${dose ? " " + dose : ""} x${cart[key]}`;
+    }).join("; ") + (appliedCode ? `; FREE BAC Water 3mL (referral)` : "");
+    try {
+      fetch(ORDER_ENDPOINT, {
+        method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({
+          name: f.name.value, contact: f.contact.value, address: f.address.value,
+          notes: f.notes.value, items, subtotal: cartSubtotal(),
+          shipping: shippingTotal(), total: orderTotal(), code: appliedCode,
+        }),
+      });
+    } catch (err) { /* non-blocking */ }
+  }
+
   document.getElementById("ch-copy").onclick = () => {
     navigator.clipboard?.writeText(text);
     document.getElementById("ch-copy").textContent = "✓ Copied";
