@@ -18,7 +18,7 @@ const SHEET_NAME       = "Orders";
 // Leave blank if you created the script from inside the Sheet (Extensions → Apps Script).
 // If you made a STANDALONE script (script.google.com), paste your Sheet's ID here —
 // it's the long part of the sheet's link between /d/ and /edit.
-const SPREADSHEET_ID   = "";
+const SPREADSHEET_ID   = "1-N34JUbV0oSBVEvEMSc5MEp5kY-3qNuodCNeQVlKhZc";
 
 function getSS_() {
   return SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID)
