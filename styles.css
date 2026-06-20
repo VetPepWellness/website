@@ -145,6 +145,24 @@ img { display: block; max-width: 100%; }
 .catalog-callout h3 { font-size: 1.7rem; color: var(--cream); margin-bottom: 0.5rem; }
 .catalog-callout p { color: var(--text-muted); max-width: 620px; margin: 0 auto 1.4rem; }
 .catalog-callout strong { color: var(--gold-light); }
+.callout-shipping { font-size: 0.92rem; margin-top: -0.4rem; }
+
+/* Checkout: BAC reminder, referral, note */
+.bac-reminder { border: 1px solid var(--gold); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 1rem; background: rgba(201,161,74,0.08); text-align: center; }
+.bac-reminder p { color: var(--cream); font-size: 0.92rem; margin-bottom: 0.7rem; }
+.bac-reminder strong { color: var(--gold-light); }
+.referral { margin-bottom: 1rem; }
+.referral > label { display: block; font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.45rem; }
+.referral > label span { color: var(--gold); }
+.referral-row { display: flex; gap: 0.6rem; }
+.referral-row input { flex: 1; font-family: inherit; font-size: 1rem; color: var(--text); background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 0.85rem; text-transform: uppercase; }
+.referral-row input:focus { outline: none; border-color: var(--gold); }
+.referral-row .btn { padding: 0.7rem 1.2rem; }
+.referral-status { font-size: 0.85rem; margin-top: 0.5rem; min-height: 1em; }
+.referral-status.ok { color: var(--gold-light); }
+.referral-status.bad { color: #e0a87a; }
+.checkout-note { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.1rem; line-height: 1.5; }
+.checkout-line.free span:last-child { color: var(--gold-light); font-weight: 600; letter-spacing: 0.05em; }
 
 /* ===== Disclaimer banner ===== */
 .disclaimer-banner { background: var(--emerald-darkest); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.6rem 0; }
