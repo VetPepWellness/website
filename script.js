@@ -321,6 +321,8 @@ function openCheckout() {
     ["name", "contact", "address"].forEach((k) => { if (saved[k]) f[k].value = saved[k]; });
   } catch {}
   document.getElementById("checkout-form").hidden = false;
+  document.querySelector(".referral").hidden = false;
+  document.querySelector(".checkout-note").hidden = false;
   document.getElementById("order-channels").hidden = true;
   document.getElementById("checkout-overlay").hidden = false;
 }
@@ -402,7 +404,12 @@ function submitOrder(e) {
   };
   // ── PAYMENT INTEGRATION POINT ──────────────────────────────────────────
   document.getElementById("checkout-form").hidden = true;
+  document.querySelector(".referral").hidden = true;
+  document.querySelector(".checkout-note").hidden = true;
+  document.getElementById("bac-reminder").hidden = true;
   document.getElementById("order-channels").hidden = false;
+  const modal = document.querySelector(".modal");
+  if (modal) modal.scrollTop = 0;
 }
 
 // ---- Search & filter ----

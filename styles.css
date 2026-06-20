@@ -18,6 +18,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body {
   font-family: "Jost", system-ui, sans-serif;
@@ -239,7 +240,9 @@ img { display: block; max-width: 100%; }
 
 /* One-tap order channels */
 .order-channels { text-align: center; }
-.order-sent-title { color: var(--gold-light); font-size: 1.15rem; margin-bottom: 1rem; font-family: "Cormorant Garamond", serif; }
+.order-sent-title { color: var(--gold-light); font-size: 1.5rem; margin-bottom: 0.4rem; font-family: "Cormorant Garamond", serif; }
+.order-sent-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5; }
+.order-sent-desc strong { color: var(--cream); }
 .channel-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
 .channel-btn { width: 100%; }
 .order-channels-note { color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem; }
