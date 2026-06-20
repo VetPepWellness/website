@@ -247,6 +247,10 @@ img { display: block; max-width: 100%; }
 .pay-title { color: var(--gold-light); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.35rem; }
 .pay-list { color: var(--cream); font-size: 0.95rem; }
 .pay-list strong { color: var(--gold-light); }
+.pay-links { display: flex; flex-direction: column; gap: 0.5rem; }
+.pay-link { display: block; padding: 0.6rem 0.9rem; border: 1px solid var(--line); border-radius: 10px; color: var(--cream); font-size: 0.95rem; background: rgba(255,255,255,0.03); transition: border-color 0.2s, background 0.2s; }
+a.pay-link:hover { border-color: var(--gold); background: rgba(201,161,74,0.1); color: var(--gold-light); }
+.pay-link.static { opacity: 0.85; }
 .pay-note { color: var(--text-muted); font-size: 0.78rem; margin-top: 0.4rem; }
 .pay-note em { color: var(--gold); opacity: 0.8; }
 
