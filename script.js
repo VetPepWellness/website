@@ -128,8 +128,21 @@ function vialSVG(product, small) {
 
 // ---- Cart state (persisted). Keyed by "id|dose". ----
 const CART_KEY = "vpw_cart";
+function isValidKey(key) {
+  const { id, dose } = parseKey(key);
+  const p = findProduct(id);
+  return !!(p && p.variants.some((v) => v.dose === dose));
+}
 let cart = loadCart();
-function loadCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || {}; } catch { return {}; } }
+function loadCart() {
+  try {
+    const c = JSON.parse(localStorage.getItem(CART_KEY)) || {};
+    let changed = false;
+    for (const k of Object.keys(c)) { if (!isValidKey(k)) { delete c[k]; changed = true; } }
+    if (changed) localStorage.setItem(CART_KEY, JSON.stringify(c)); // drop outdated items
+    return c;
+  } catch { return {}; }
+}
 function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 function cartCount() { return Object.values(cart).reduce((a, b) => a + b, 0); }
 function parseKey(key) { const i = key.lastIndexOf("|"); return { id: key.slice(0, i), dose: key.slice(i + 1) }; }
@@ -139,8 +152,9 @@ function cartSubtotal() {
     return sum + variantPrice(id, dose) * qty;
   }, 0);
 }
+const SHIP_BASE = 8;
 const SHIP_PER_VIAL = 3;
-function shippingTotal() { return SHIP_PER_VIAL * cartCount(); }
+function shippingTotal() { return cartCount() ? SHIP_BASE + SHIP_PER_VIAL * cartCount() : 0; }
 function orderTotal() { return cartSubtotal() + shippingTotal(); }
 
 function addToCart(id, dose, silent) {
@@ -290,7 +304,7 @@ function renderCheckoutSummary() {
   }
   summary.innerHTML = lines.join("") +
     `<div class="checkout-line"><span>Subtotal</span><span>${money(cartSubtotal())}</span></div>` +
-    `<div class="checkout-line"><span>Shipping ($${SHIP_PER_VIAL}/vial × ${cartCount()})</span><span>${money(shippingTotal())}</span></div>` +
+    `<div class="checkout-line"><span>Shipping</span><span>${money(shippingTotal())}</span></div>` +
     `<div class="checkout-line total"><span>Total</span><span>${money(orderTotal())}</span></div>`;
 
   // BAC water reminder
@@ -343,7 +357,7 @@ function buildOrderText(f) {
   return (
     `New Order — Vet Pep Wellness\n${lines.join("\n")}\n` +
     `Subtotal: ${money(cartSubtotal())}\n` +
-    `Shipping ($${SHIP_PER_VIAL}/vial × ${cartCount()}): ${money(shippingTotal())}\n` +
+    `Shipping: ${money(shippingTotal())}\n` +
     `Total: ${money(orderTotal())}` +
     `${referralLine}\n\n` +
     `Name: ${f.name.value}\nContact: ${f.contact.value}\nShip to:\n${f.address.value}\n\n` +
