@@ -81,8 +81,8 @@ const PRODUCTS = [
 // Add your reps here as  CODE: "Name".  A valid code = free BAC water + sale credit.
 // (The code + rep name are included in every order so you can track who sold what.)
 const REPS = {
-  // "JAKE10": "Jake M.",
-  // "MARIA":  "Maria R.",
+  // CODE (uppercase) : "Salesperson name"
+  "Z11111": "Rep Z11111",
 };
 const BAC_FREEBIE = { id: "bacwater", dose: "3 mL" }; // free item granted with a valid code
 const NO_BAC_NEEDED = new Set(["bacwater", "lipoc-b12"]); // items that don't require BAC water
