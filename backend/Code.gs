@@ -15,6 +15,15 @@ const REFILL_DAYS      = 30;                      // days from order until refil
 const REMIND_LEAD_DAYS = 3;                       // remind this many days before due
 const OWNER_EMAIL      = "vetpepwellness@gmail.com";
 const SHEET_NAME       = "Orders";
+// Leave blank if you created the script from inside the Sheet (Extensions → Apps Script).
+// If you made a STANDALONE script (script.google.com), paste your Sheet's ID here —
+// it's the long part of the sheet's link between /d/ and /edit.
+const SPREADSHEET_ID   = "";
+
+function getSS_() {
+  return SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID)
+                        : SpreadsheetApp.getActiveSpreadsheet();
+}
 
 /** Receives orders POSTed from the website. */
 function doPost(e) {
@@ -53,7 +62,7 @@ function doGet() {
 }
 
 function getSheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSS_();
   let s = ss.getSheetByName(SHEET_NAME);
   if (!s) {
     s = ss.insertSheet(SHEET_NAME);
