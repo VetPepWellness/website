@@ -134,19 +134,24 @@
   <section class="section" id="shop">
     <div class="container">
       <p class="eyebrow center">Catalog</p>
-      <h2 class="section-title center">Top Sellers</h2>
-      <p class="section-note center">A sample of our most-requested products — our full catalogue is much larger.</p>
+      <h2 class="section-title center">In Stock &amp; Ready to Ship</h2>
+      <p class="section-note center">Everything below is on hand now. Need something else? We can source it — Peps and More.</p>
 
       <div class="shop-filters" id="shop-filters"><!-- category pills injected --></div>
       <div class="product-grid" id="shop-grid"><!-- injected --></div>
       <p class="no-results" id="no-results" hidden>No products match your search.</p>
 
       <div class="catalog-callout">
-        <h3>This is just the start.</h3>
+        <h3>Don't see it? We'll source it.</h3>
         <p>
-          What you see here are our top sellers — we carry a full catalogue beyond this page,
-          and we can source other products and dosages on request. Don't see what you're
-          looking for, or have a question? <strong>Just ask — we're happy to help.</strong>
+          What's listed here is what we keep on hand and ready to ship. Beyond that, we can
+          order virtually any peptide, dosage, or product you're after — Peps and More.
+          <strong>Just ask.</strong>
+        </p>
+        <p class="callout-shipping">
+          📦 In-stock items usually ship <strong>same or next day</strong>. Special orders that
+          aren't on hand can take about <strong>7–10 days</strong> — and we'll keep you updated
+          every step.
         </p>
         <a href="contact.html" class="btn btn-gold">Request a Product</a>
       </div>
@@ -242,7 +247,7 @@
     <div class="cart-items" id="cart-items"><!-- injected --></div>
     <div class="cart-foot">
       <div class="cart-total"><span>Subtotal</span><span id="cart-subtotal">$0</span></div>
-      <p class="cart-note">Shipping &amp; final total confirmed at order review.</p>
+      <p class="cart-note">+ $3/vial shipping, calculated at checkout.</p>
       <button class="btn btn-gold btn-block" id="checkout-btn" disabled>Checkout</button>
     </div>
   </aside>
@@ -254,6 +259,25 @@
       <h3 id="checkout-title">Review &amp; Place Order</h3>
       <p class="modal-sub">Send us your order and we'll confirm availability, total (incl. shipping), and payment details.</p>
       <div class="checkout-summary" id="checkout-summary"><!-- injected --></div>
+
+      <!-- BAC water reminder -->
+      <div class="bac-reminder" id="bac-reminder" hidden>
+        <p>💧 Most peptides need <strong>BAC water (3 mL)</strong> to mix before use. Did you forget yours?</p>
+        <button type="button" class="btn btn-gold" id="add-bac-btn">Add BAC Water 3 mL — $15</button>
+      </div>
+
+      <!-- Salesperson / referral code -->
+      <div class="referral">
+        <label for="referral-code">Have a salesperson or referral code? <span>(optional — get free BAC water)</span></label>
+        <div class="referral-row">
+          <input type="text" id="referral-code" placeholder="Enter code" autocomplete="off" />
+          <button type="button" class="btn btn-ghost" id="apply-code">Apply</button>
+        </div>
+        <p class="referral-status" id="referral-status"></p>
+      </div>
+
+      <p class="checkout-note">Most products require BAC water to reconstitute. In-stock items typically ship same or next day; anything we special-order for you can take about 7–10 days — we'll keep you posted either way.</p>
+
       <form class="checkout-form" id="checkout-form">
         <div class="form-row">
           <label>Full Name<input type="text" name="name" required /></label>

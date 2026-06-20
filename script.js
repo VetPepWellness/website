@@ -1,179 +1,91 @@
 // ===== Vet Pep Wellness — storefront =====
-// NOTE: Catalogue transcribed from the product sheets. Prices marked with a
-// trailing "// verify" in the data were read from a dense, low-res photo —
-// confirm those figures. Edit anything here freely; the site auto-updates.
+// In-stock catalogue. We can source other peptides on request (special order).
 
 // ---- Categories ----
 const CATEGORIES = [
   { id: "glp1",     name: "GLP-1 & Weight Loss",     icon: "⚖", blurb: "Appetite, glucose & metabolic fat loss", color: "#e3c478" },
-  { id: "gh",       name: "Growth Hormone & Body",   icon: "❖", blurb: "GH / IGF-1 & body composition",          color: "#cbb06a" },
-  { id: "repair",   name: "Tissue Repair & Recovery",icon: "✦", blurb: "Injury recovery, skin & wound healing",   color: "#d9a679" },
-  { id: "longevity",name: "Energy & Longevity",      icon: "⏳", blurb: "Mitochondria, antioxidants & anti-aging", color: "#9fc3a8" },
-  { id: "immune",   name: "Immune & Inflammation",   icon: "✚", blurb: "Immune support & inflammation",           color: "#a7c4b5" },
-  { id: "brain",    name: "Brain, Mood & Sleep",     icon: "☾", blurb: "Focus, mood, sleep & nerve support",      color: "#c2b2d8" },
-  { id: "sexual",   name: "Sexual & Hormonal",       icon: "♡", blurb: "Libido & hormonal signaling",             color: "#dba6a6" },
-  { id: "supply",   name: "Supplies",                icon: "⚗", blurb: "Reconstitution & extras",                 color: "#bcae8a" },
+  { id: "gh",       name: "Growth Hormone & Recovery",icon:"❖", blurb: "GH / IGF-1 & body composition",          color: "#cbb06a" },
+  { id: "repair",   name: "Tissue Repair & Skin",    icon: "✦", blurb: "Recovery, skin & wound healing",         color: "#d9a679" },
+  { id: "longevity",name: "Energy & Longevity",      icon: "⏳", blurb: "Mitochondria & metabolic energy",        color: "#9fc3a8" },
+  { id: "brain",    name: "Brain, Mood & Sleep",     icon: "☾", blurb: "Focus, mood & stress support",           color: "#c2b2d8" },
+  { id: "tan",      name: "Tanning & Aesthetic",     icon: "☀", blurb: "Pigmentation & photoprotection",         color: "#d8b48a" },
+  { id: "supply",   name: "Supplies",                icon: "⚗", blurb: "Reconstitution essentials",              color: "#bcae8a" },
 ];
 
-// ---- Products. Each has one or more dosage variants {dose, price}. ----
+// ---- In-stock products. Each has one or more dosage variants {dose, price}. ----
 const PRODUCTS = [
   // ===== GLP-1 & Weight Loss =====
-  { id: "tirzepatide", cat: "glp1", name: "Tirzepatide", best: true,
-    info: "Dual GLP-1/GIP — very strong appetite control, weight loss and glucose support.",
-    variants: [{dose:"5 mg",price:50},{dose:"10 mg",price:70},{dose:"15 mg",price:80},{dose:"20 mg",price:90},{dose:"30 mg",price:105},{dose:"40 mg",price:120},{dose:"50 mg",price:140},{dose:"60 mg",price:165}] },
-  { id: "semaglutide", cat: "glp1", name: "Semaglutide", best: true,
-    info: "GLP-1 — appetite control, fullness and glucose control.",
-    variants: [{dose:"5 mg",price:45},{dose:"10 mg",price:60},{dose:"15 mg",price:70},{dose:"20 mg",price:80},{dose:"30 mg",price:95}] },
   { id: "retatrutide", cat: "glp1", name: "Retatrutide", best: true,
     info: "Triple GLP-1/GIP/glucagon — the strongest fat-loss peptide in the lineup.",
-    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:85},{dose:"15 mg",price:100},{dose:"20 mg",price:135},{dose:"30 mg",price:175},{dose:"50 mg",price:225},{dose:"60 mg",price:265}] },
-  { id: "cagrilintide", cat: "glp1", name: "Cagrilintide",
-    info: "Amylin analog — increases fullness and reduces appetite.",
-    variants: [{dose:"5 mg",price:110},{dose:"10 mg",price:165}] },
-  { id: "cagri-sema", cat: "glp1", name: "Cagrilintide + Semaglutide",
-    info: "Combo for stronger hunger control than semaglutide alone.",
-    variants: [{dose:"5 mg + 5 mg",price:185}] },
-  { id: "aod9604", cat: "glp1", name: "AOD-9604",
-    info: "HGH fragment aimed at fat metabolism; gentler than the GLP-1 class.",
-    variants: [{dose:"5 mg",price:95},{dose:"10 mg",price:185}] }, // verify
-  { id: "amino1mq", cat: "glp1", name: "5-Amino-1MQ",
-    info: "Research compound targeting the NNMT/NAD fat-metabolism pathway.",
-    variants: [{dose:"10 mg",price:50},{dose:"60 mg",price:95}] }, // verify
+    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:85},{dose:"30 mg",price:175},{dose:"50 mg",price:225},{dose:"60 mg",price:265}] },
+  { id: "tirzepatide", cat: "glp1", name: "Tirzepatide", best: true,
+    info: "Dual GLP-1/GIP — strong appetite control, weight loss and glucose support.",
+    variants: [{dose:"5 mg",price:50},{dose:"10 mg",price:70},{dose:"15 mg",price:80},{dose:"20 mg",price:105},{dose:"40 mg",price:120},{dose:"50 mg",price:140},{dose:"60 mg",price:165}] },
+  { id: "semaglutide", cat: "glp1", name: "Semaglutide", best: true,
+    info: "GLP-1 — appetite control, fullness and glucose support.",
+    variants: [{dose:"5 mg",price:45},{dose:"10 mg",price:60},{dose:"15 mg",price:70},{dose:"20 mg",price:80},{dose:"30 mg",price:95}] },
   { id: "lipoc-b12", cat: "glp1", name: "Lipo-C with B12",
-    info: "Lipotropic support plus B12 to help energy and fat metabolism.",
+    info: "Lipotropic + B12 blend to support energy and fat metabolism.",
     variants: [{dose:"10 mL",price:60}] },
-  { id: "lipoc", cat: "glp1", name: "Lipo-C (no B12)",
-    info: "Lipotropic support without B12.",
-    variants: [{dose:"10 mL",price:60}] },
-  { id: "lemonbottle", cat: "glp1", name: "Lemon Bottle",
-    info: "Local cosmetic fat-dissolving product (not whole-body fat loss).",
-    variants: [{dose:"10 mL",price:60}] }, // verify
-  { id: "b12", cat: "glp1", name: "Vitamin B12",
-    info: "B12 for general energy support.",
-    variants: [{dose:"10 mL",price:45}] }, // verify
 
-  // ===== Growth Hormone & Body Composition =====
+  // ===== Growth Hormone & Recovery =====
   { id: "tesamorelin", cat: "gh", name: "Tesamorelin",
     info: "Raises growth hormone to help reduce visceral belly fat.",
     variants: [{dose:"5 mg",price:95},{dose:"10 mg",price:160},{dose:"15 mg",price:195}] },
   { id: "cjc-ipa", cat: "gh", name: "CJC-1295 (no DAC) + Ipamorelin", best: true,
-    info: "Popular GH-pulse stack — supports sleep, recovery and body composition.",
-    variants: [{dose:"5 mg + 5 mg",price:115}] },
-  { id: "cjc-dac", cat: "gh", name: "CJC-1295 with DAC",
-    info: "Longer-acting GH/IGF-1 signal.",
-    variants: [{dose:"5 mg",price:90}] },
-  { id: "cjc-nodac", cat: "gh", name: "CJC-1295 without DAC",
-    info: "Shorter GH pulse; usually stacked with ipamorelin.",
-    variants: [{dose:"10 mg",price:135}] },
-  { id: "ipamorelin", cat: "gh", name: "Ipamorelin",
-    info: "Gentle GH secretagogue — clean, but weaker on its own.",
-    variants: [{dose:"5 mg",price:50},{dose:"10 mg",price:70}] },
-  { id: "sermorelin", cat: "gh", name: "Sermorelin Acetate",
-    info: "Tells the pituitary to release growth hormone naturally.",
-    variants: [{dose:"5 mg",price:80},{dose:"10 mg",price:145}] }, // verify
+    info: "GH-pulse stack — supports sleep, recovery and body composition.",
+    variants: [{dose:"10 mg (5 + 5)",price:115}] },
 
-  // ===== Tissue Repair & Recovery =====
-  { id: "bpc157", cat: "repair", name: "BPC-157",
-    info: "Injury-repair peptide — supports tendon, gut and general healing.",
-    variants: [{dose:"5 mg",price:45},{dose:"10 mg",price:60}] },
-  { id: "tb500", cat: "repair", name: "TB-500 (Thymosin Beta-4)",
-    info: "Recovery and repair — supports flexibility and healing.",
-    variants: [{dose:"5 mg",price:60},{dose:"10 mg",price:120}] },
-  { id: "bpc-tb-5", cat: "repair", name: "BPC-157 + TB-500 (5 mg + 5 mg)",
-    info: "Repair combo for faster recovery, smaller vial.",
-    variants: [{dose:"10 mg",price:105}] },
-  { id: "bpc-tb-10", cat: "repair", name: "BPC-157 + TB-500 (10 mg + 10 mg)",
-    info: "Same repair combo, higher total supply.",
-    variants: [{dose:"20 mg",price:180}] },
-  { id: "glow", cat: "repair", name: "Glow (BPC-157 + GHK-Cu + TB-500)", best: true,
-    info: "Skin + tissue-repair blend for recovery and glow.",
-    variants: [{dose:"70 mg",price:195}] },
-  { id: "klow", cat: "repair", name: "KLOW (GHK-Cu + TB-500 + BPC-157 + KPV)", best: true,
-    info: "Broadest repair blend — skin, tissue, tendon and inflammation.",
-    variants: [{dose:"60 mg",price:195}] }, // verify total mg
+  // ===== Tissue Repair & Skin =====
   { id: "ghkcu", cat: "repair", name: "GHK-Cu",
     info: "Copper peptide — skin repair, collagen and anti-aging.",
-    variants: [{dose:"50 mg",price:50},{dose:"100 mg",price:75}] },
-  { id: "kpv", cat: "repair", name: "KPV",
-    info: "Calms inflammation — gut and broad support.",
-    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:70}] },
-  { id: "ll37", cat: "repair", name: "LL-37",
-    info: "Antimicrobial immune-defense and repair peptide.",
-    variants: [{dose:"5 mg",price:75}] }, // verify
+    variants: [{dose:"50 mg",price:40},{dose:"100 mg",price:70}] },
+  { id: "bpc-tb", cat: "repair", name: "BPC-157 + TB-500",
+    info: "Repair combo — supports faster recovery of tendon, gut and tissue.",
+    variants: [{dose:"10 mg (5 + 5)",price:105},{dose:"20 mg (10 + 10)",price:180}] },
+  { id: "glow", cat: "repair", name: "Glow (BPC-157 + GHK-Cu + TB-500)", best: true,
+    info: "Skin + tissue-repair blend for recovery and a healthy glow. BPC-157 10mg · GHK-Cu 50mg · TB-500 10mg.",
+    variants: [{dose:"70 mg",price:160}] },
+  { id: "klow", cat: "repair", name: "KLOW (GHK-Cu + TB-500 + BPC-157 + KPV)", best: true,
+    info: "Broadest repair blend — skin, tissue, tendon and inflammation. GHK-Cu 50mg · TB-500 10mg · BPC-157 10mg · KPV 10mg.",
+    variants: [{dose:"80 mg",price:195}] },
 
   // ===== Energy & Longevity =====
   { id: "nad", cat: "longevity", name: "NAD+",
     info: "Cellular energy and longevity support.",
     variants: [{dose:"100 mg",price:55},{dose:"500 mg",price:80},{dose:"1000 mg",price:125}] },
-  { id: "glutathione", cat: "longevity", name: "Glutathione",
-    info: "Master antioxidant — detox and redox balance.",
-    variants: [{dose:"600 mg",price:55}] },
-  { id: "ss31", cat: "longevity", name: "SS-31 (Elamipretide)",
-    info: "Targets mitochondria for cellular energy support.",
-    variants: [{dose:"10 mg",price:85}] }, // verify
   { id: "motsc", cat: "longevity", name: "MOTS-C",
-    info: "Mitochondrial/metabolic peptide — energy and endurance.",
-    variants: [{dose:"5 mg",price:100},{dose:"10 mg",price:165}] }, // verify
-  { id: "epithalon", cat: "longevity", name: "Epithalon",
-    info: "Longevity, sleep and circadian telomere-research peptide.",
-    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:115}] }, // verify
-
-  // ===== Immune & Inflammation =====
-  { id: "thymosin-a1", cat: "immune", name: "Thymosin Alpha-1",
-    info: "Strong immune-support peptide — T-cell immune signaling.",
-    variants: [{dose:"5 mg",price:95},{dose:"10 mg",price:185}] }, // verify
-  { id: "thymalin", cat: "immune", name: "Thymalin",
-    info: "Immune-aging and restorative thymus peptide.",
-    variants: [{dose:"10 mg",price:95}] }, // verify
-  { id: "vip", cat: "immune", name: "VIP",
-    info: "Calms inflammation; affects blood flow and neuroimmune signaling.",
-    variants: [{dose:"5 mg",price:115}] }, // verify
-  { id: "ara290", cat: "immune", name: "Ara-290",
-    info: "Nerve/tissue-protective; anti-inflammatory repair peptide.",
-    variants: [{dose:"10 mg",price:115}] }, // verify
+    info: "Mitochondrial peptide — energy, metabolism and endurance.",
+    variants: [{dose:"10 mg",price:70},{dose:"40 mg",price:165}] },
 
   // ===== Brain, Mood & Sleep =====
-  { id: "cerebrolysin", cat: "brain", name: "Cerebrolysin",
-    info: "Neuro-recovery, cognition and brain support.",
-    variants: [{dose:"10 mL",price:65}] }, // verify
   { id: "semax", cat: "brain", name: "Semax",
     info: "Focus, learning, mental energy and neuroprotection.",
-    variants: [{dose:"30 mg",price:95}] }, // verify
+    variants: [{dose:"5 mg",price:50},{dose:"10 mg",price:75}] },
   { id: "selank", cat: "brain", name: "Selank",
     info: "Calm focus, stress control and anxiety support.",
-    variants: [{dose:"30 mg",price:95}] }, // verify
-  { id: "dsip", cat: "brain", name: "DSIP",
-    info: "Deep-sleep and sleep-quality support.",
-    variants: [{dose:"5 mg",price:60}] }, // verify
+    variants: [{dose:"5 mg",price:50},{dose:"10 mg",price:75}] },
 
-  // ===== Sexual & Hormonal =====
-  { id: "pt141", cat: "sexual", name: "PT-141 (Bremelanotide)",
-    info: "Direct libido and arousal peptide.",
-    variants: [{dose:"10 mg",price:65}] },
-  { id: "hcg", cat: "sexual", name: "HCG",
-    info: "LH-like signal — supports testosterone and fertility.",
-    variants: [{dose:"5000 iu",price:85}] }, // verify
-  { id: "kisspeptin", cat: "sexual", name: "Kisspeptin-10",
-    info: "Stimulates the GnRH → LH/FSH hormone chain.",
-    variants: [{dose:"5 mg",price:65},{dose:"10 mg",price:95}] }, // verify
-  { id: "mt2", cat: "sexual", name: "Melanotan II (MT-2)",
-    info: "Tanning plus libido effect.",
-    variants: [{dose:"10 mg",price:55}] }, // verify
-  { id: "oxytocin", cat: "sexual", name: "Oxytocin Acetate",
-    info: "Bonding, social and neuroendocrine peptide.",
-    variants: [{dose:"10 mg",price:55}] }, // verify
-  { id: "mt1", cat: "sexual", name: "Melanotan I / Afamelanotide",
-    info: "Pigmentation and photoprotection tanning peptide.",
-    variants: [{dose:"10 mg",price:65}] }, // verify
+  // ===== Tanning & Aesthetic =====
+  { id: "mt1", cat: "tan", name: "MT-1 (Melanotan I)",
+    info: "Tanning and photoprotection peptide.",
+    variants: [{dose:"5 mg",price:55}] },
 
   // ===== Supplies =====
   { id: "bacwater", cat: "supply", name: "BAC Water (Bacteriostatic)",
-    info: "For reconstituting peptides.",
-    variants: [{dose:"3 mL",price:10},{dose:"10 mL",price:15}] }, // verify
-  { id: "aceticwater", cat: "supply", name: "Acetic Acid Water",
-    info: "Dilute acetic acid for reconstitution.",
-    variants: [{dose:"3 mL",price:11},{dose:"10 mL",price:15}] }, // verify
+    info: "Needed to reconstitute (mix) most peptides before use.",
+    variants: [{dose:"3 mL",price:15},{dose:"10 mL",price:40}] },
 ];
+
+// ---- Salesperson / referral codes ----
+// Add your reps here as  CODE: "Name".  A valid code = free BAC water + sale credit.
+// (The code + rep name are included in every order so you can track who sold what.)
+const REPS = {
+  // "JAKE10": "Jake M.",
+  // "MARIA":  "Maria R.",
+};
+const BAC_FREEBIE = { id: "bacwater", dose: "3 mL" }; // free item granted with a valid code
+const NO_BAC_NEEDED = new Set(["bacwater", "lipoc-b12"]); // items that don't require BAC water
 
 // ---- Your contact details (used for one-tap order sending) ----
 // TODO: replace with your real number (digits only, incl. country code) and email.
@@ -227,12 +139,15 @@ function cartSubtotal() {
     return sum + variantPrice(id, dose) * qty;
   }, 0);
 }
+const SHIP_PER_VIAL = 3;
+function shippingTotal() { return SHIP_PER_VIAL * cartCount(); }
+function orderTotal() { return cartSubtotal() + shippingTotal(); }
 
-function addToCart(id, dose) {
+function addToCart(id, dose, silent) {
   const key = `${id}|${dose}`;
   cart[key] = (cart[key] || 0) + 1;
   saveCart(); renderCart(); updateCartCount();
-  openCart();
+  if (!silent) openCart();
 }
 function setQty(key, qty) {
   if (qty <= 0) delete cart[key]; else cart[key] = qty;
@@ -353,17 +268,40 @@ function closeCart() {
 
 // ---- Checkout ----
 const CUST_KEY = "vpw_customer";
+let appliedCode = "";   // valid referral code currently applied
+let appliedRep = "";    // rep name for the applied code
+
+function cartNeedsBac() {
+  return Object.keys(cart).some((key) => !NO_BAC_NEEDED.has(parseKey(key).id));
+}
+function cartHasBac() {
+  return Object.keys(cart).some((key) => parseKey(key).id === "bacwater");
+}
+
+function renderCheckoutSummary() {
+  const summary = document.getElementById("checkout-summary");
+  const lines = Object.keys(cart).map((key) => {
+    const { id, dose } = parseKey(key);
+    const p = findProduct(id);
+    return `<div class="checkout-line"><span>${p.name}${dose ? " " + dose : ""} × ${cart[key]}</span><span>${money(variantPrice(id, dose) * cart[key])}</span></div>`;
+  });
+  if (appliedCode) {
+    const fb = findProduct(BAC_FREEBIE.id);
+    lines.push(`<div class="checkout-line free"><span>${fb.name} ${BAC_FREEBIE.dose} × 1 (referral reward)</span><span>FREE</span></div>`);
+  }
+  summary.innerHTML = lines.join("") +
+    `<div class="checkout-line"><span>Subtotal</span><span>${money(cartSubtotal())}</span></div>` +
+    `<div class="checkout-line"><span>Shipping ($${SHIP_PER_VIAL}/vial × ${cartCount()})</span><span>${money(shippingTotal())}</span></div>` +
+    `<div class="checkout-line total"><span>Total</span><span>${money(orderTotal())}</span></div>`;
+
+  // BAC water reminder
+  const reminder = document.getElementById("bac-reminder");
+  if (reminder) reminder.hidden = !(cartNeedsBac() && !cartHasBac() && !appliedCode);
+}
 
 function openCheckout() {
   const keys = Object.keys(cart); if (!keys.length) return;
-  const summary = document.getElementById("checkout-summary");
-  summary.innerHTML =
-    keys.map((key) => {
-      const { id, dose } = parseKey(key);
-      const p = findProduct(id);
-      return `<div class="checkout-line"><span>${p.name}${dose ? " " + dose : ""} × ${cart[key]}</span><span>${money(variantPrice(id, dose) * cart[key])}</span></div>`;
-    }).join("") +
-    `<div class="checkout-line total"><span>Subtotal</span><span>${money(cartSubtotal())}</span></div>`;
+  renderCheckoutSummary();
   try {
     const saved = JSON.parse(localStorage.getItem(CUST_KEY)) || {};
     const f = document.getElementById("checkout-form");
@@ -375,15 +313,40 @@ function openCheckout() {
 }
 function closeCheckout() { document.getElementById("checkout-overlay").hidden = true; }
 
+function applyReferral() {
+  const input = document.getElementById("referral-code");
+  const status = document.getElementById("referral-status");
+  const code = (input.value || "").trim().toUpperCase();
+  if (!code) { appliedCode = ""; appliedRep = ""; status.textContent = ""; renderCheckoutSummary(); return; }
+  if (REPS[code]) {
+    appliedCode = code; appliedRep = REPS[code];
+    status.className = "referral-status ok";
+    status.textContent = `✓ Code applied — free BAC water (3 mL) added with your order.`;
+  } else {
+    appliedCode = ""; appliedRep = "";
+    status.className = "referral-status bad";
+    status.textContent = "Code not recognized — no problem, your order will still go through.";
+  }
+  renderCheckoutSummary();
+}
+
 function buildOrderText(f) {
   const lines = Object.keys(cart).map((key) => {
     const { id, dose } = parseKey(key);
     const p = findProduct(id);
     return `• ${p.name}${dose ? " " + dose : ""} x${cart[key]} = ${money(variantPrice(id, dose) * cart[key])}`;
-  }).join("\n");
+  });
+  if (appliedCode) {
+    const fb = findProduct(BAC_FREEBIE.id);
+    lines.push(`• ${fb.name} ${BAC_FREEBIE.dose} x1 = FREE (referral reward)`);
+  }
+  const referralLine = appliedCode ? `\nReferral code: ${appliedCode} — Sold by: ${appliedRep}` : "";
   return (
-    `New Order — Vet Pep Wellness\n${lines}\nSubtotal: ${money(cartSubtotal())}\n` +
-    `(shipping/total to be confirmed)\n\n` +
+    `New Order — Vet Pep Wellness\n${lines.join("\n")}\n` +
+    `Subtotal: ${money(cartSubtotal())}\n` +
+    `Shipping ($${SHIP_PER_VIAL}/vial × ${cartCount()}): ${money(shippingTotal())}\n` +
+    `Total: ${money(orderTotal())}` +
+    `${referralLine}\n\n` +
     `Name: ${f.name.value}\nContact: ${f.contact.value}\nShip to:\n${f.address.value}\n\n` +
     `Notes: ${f.notes.value || "—"}`
   );
@@ -498,6 +461,18 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("checkout-close")?.addEventListener("click", closeCheckout);
   document.getElementById("checkout-overlay")?.addEventListener("click", (e) => { if (e.target.id === "checkout-overlay") closeCheckout(); });
   document.getElementById("checkout-form")?.addEventListener("submit", submitOrder);
+
+  // BAC water "did you forget?" — silent add, then refresh summary
+  document.getElementById("add-bac-btn")?.addEventListener("click", () => {
+    addToCart("bacwater", "3 mL", true);
+    renderCheckoutSummary();
+  });
+
+  // Referral / salesperson code
+  document.getElementById("apply-code")?.addEventListener("click", applyReferral);
+  document.getElementById("referral-code")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); applyReferral(); }
+  });
 
   document.getElementById("search")?.addEventListener("input", () => {
     applyFilters();
