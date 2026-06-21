@@ -47,9 +47,11 @@ function doPost(e) {
       "Rep Code": d.code || "",
       "Refill Due": new Date(Date.now() + REFILL_DAYS * 86400000),
       "Reminder Sent": "NO",
-      "Paid": "NO",
+      "Paid": false, // clickable checkbox
     };
-    writeRow_(getSheet_(), values);
+    const sheet = getSheet_();
+    writeRow_(sheet, values);
+    makePaidCheckbox_(sheet);
     sendInvoice_(d);
     return json_({ ok: true });
   } catch (err) {
@@ -77,6 +79,13 @@ function writeRow_(sheet, values) {
   }
   const row = headers.map((h) => (h in values ? values[h] : ""));
   sheet.appendRow(row);
+}
+
+/** Turns the just-added row's "Paid" cell into a clickable checkbox. */
+function makePaidCheckbox_(sheet) {
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const pc = headers.indexOf("Paid");
+  if (pc >= 0) sheet.getRange(sheet.getLastRow(), pc + 1).insertCheckboxes();
 }
 
 function json_(o) {
