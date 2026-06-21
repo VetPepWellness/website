@@ -162,11 +162,12 @@
   <section class="disclaimer-banner">
     <div class="container">
       <p>
-        <strong>Research use only.</strong> Our products are not dietary supplements or
-        medications and are not intended to diagnose, treat, cure, or prevent any disease.
-        They are sold for laboratory and research purposes only. It is your responsibility
-        to know and comply with the laws that apply to you. Must be 21+ to order.
-        <em>[Review and adjust this disclaimer for your jurisdiction.]</em>
+        <strong>Research use only.</strong> Our products are not dietary supplements, drugs, or
+        medications, and are not intended to diagnose, treat, cure, or prevent any disease.
+        They are sold strictly for laboratory and research purposes and are not for human or
+        veterinary consumption. <strong>Nothing on this site is medical advice</strong> —
+        consult a qualified healthcare professional before making any health decision. By
+        ordering you confirm you are 21+ and that you will comply with all laws that apply to you.
       </p>
     </div>
   </section>
@@ -274,28 +275,29 @@
         <p class="referral-status" id="referral-status"></p>
       </div>
 
-      <p class="checkout-note">Most products require BAC water to reconstitute. In-stock items typically ship same or next day; anything we special-order for you can take about 7–10 days — we'll keep you posted either way.</p>
+      <p class="checkout-note">Most products require BAC water to reconstitute. In-stock items typically ship same or next day; anything we special-order for you can take about 7–10 days — we'll keep you posted either way. <strong>Research use only — not for human consumption and not medical advice.</strong> Must be 21+.</p>
 
-      <form class="checkout-form" id="checkout-form">
+      <form class="checkout-form" id="checkout-form" novalidate>
         <div class="form-row">
-          <label>Full Name<input type="text" name="name" required /></label>
-          <label>Email or Phone<input type="text" name="contact" required /></label>
+          <label>First Name<input type="text" name="firstName" required autocomplete="given-name" /></label>
+          <label>Last Name<input type="text" name="lastName" required autocomplete="family-name" /></label>
         </div>
-        <label>Shipping Address<textarea name="address" rows="2" required></textarea></label>
-        <label>Notes (optional)<textarea name="notes" rows="2" placeholder="Anything we should know?"></textarea></label>
+        <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+        <label>Phone <span class="opt">(optional)</span><input type="tel" name="phone" autocomplete="tel" /></label>
+        <label>Street Address<input type="text" name="street" required autocomplete="address-line1" /></label>
+        <div class="form-row">
+          <label>City<input type="text" name="city" required autocomplete="address-level2" /></label>
+          <label>State<input type="text" name="state" required autocomplete="address-level1" /></label>
+        </div>
+        <label>ZIP Code<input type="text" name="zip" required inputmode="numeric" autocomplete="postal-code" /></label>
         <button type="submit" class="btn btn-gold btn-block">Place Order</button>
         <p class="form-hint" id="checkout-hint"></p>
       </form>
 
-      <!-- One-tap send options (shown after Place Order) -->
+      <!-- Confirmation (shown after Place Order) -->
       <div class="order-channels" id="order-channels" hidden>
-        <p class="order-sent-title">✓ Almost done — one last step</p>
-        <p class="order-sent-desc">Tap <strong>Email My Order</strong> to send it to us (or Copy it and message us). We'll reply to confirm your total, then you pay using an option below.</p>
-        <div class="channel-btns">
-          <a class="btn btn-gold channel-btn" id="ch-email" href="#">✉ Email My Order</a>
-          <button class="btn btn-ghost channel-btn" id="ch-copy" type="button">⧉ Copy Order</button>
-        </div>
-        <p class="order-channels-note">Pick whatever's easiest — we'll confirm your total right back.</p>
+        <p class="order-sent-title">✓ Order received!</p>
+        <p class="order-sent-desc">We've logged your order and we'll reach out to confirm your total (including shipping). To speed things up, go ahead and send payment using an option below — add your name in the note so we can match it.</p>
         <div class="pay-methods">
           <p class="pay-title">Pay by</p>
           <div class="pay-links">
@@ -304,7 +306,12 @@
             <a class="pay-link" href="https://cash.app/launch/bitcoin/$vetpepwellness/KtneJ3fp2a" target="_blank" rel="noopener">₿ Bitcoin (via Cash App)</a>
             <span class="pay-link static">🤝 Cash — local pickup or delivery around Lubbock &amp; West Texas</span>
           </div>
-          <p class="pay-note">Please send payment once we confirm your total, and add your name in the note so we can match it to your order.</p>
+          <p class="pay-note">Send payment once we confirm your total, and add your name in the note so we can match it to your order.</p>
+        </div>
+        <p class="order-channels-note">Have a question, or want a copy for your records?</p>
+        <div class="channel-btns">
+          <a class="btn btn-ghost channel-btn" id="ch-email" href="#">✉ Email Us</a>
+          <button class="btn btn-ghost channel-btn" id="ch-copy" type="button">⧉ Copy Order</button>
         </div>
       </div>
     </div>
