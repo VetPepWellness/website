@@ -318,7 +318,7 @@ function openCheckout() {
   try {
     const saved = JSON.parse(localStorage.getItem(CUST_KEY)) || {};
     const f = document.getElementById("checkout-form");
-    ["name", "contact", "street", "city", "state", "zip"].forEach((k) => { if (saved[k] && f[k]) f[k].value = saved[k]; });
+    ["firstName", "lastName", "email", "phone", "street", "city", "state", "zip"].forEach((k) => { if (saved[k] && f[k]) f[k].value = saved[k]; });
   } catch {}
   document.getElementById("checkout-form").hidden = false;
   document.querySelector(".referral").hidden = false;
@@ -360,43 +360,46 @@ function buildOrderText(f) {
     lines.push(`• ${fb.name} ${BAC_FREEBIE.dose} x1 = FREE (referral reward)`);
   }
   const referralLine = appliedCode ? `\nReferral / Salesperson code: ${appliedCode}` : "";
+  const phone = f.phone.value.trim();
   return (
     `New Order — Vet Pep Wellness\n${lines.join("\n")}\n` +
     `Subtotal: ${money(cartSubtotal())}\n` +
     `Shipping: ${money(shippingTotal())}\n` +
     `Total: ${money(orderTotal())}` +
     `${referralLine}\n\n` +
-    `Name: ${f.name.value}\nContact: ${f.contact.value}\nShip to:\n${fullAddress(f)}\n\n` +
-    `Notes: ${f.notes.value || "—"}`
+    `Name: ${f.firstName.value} ${f.lastName.value}\n` +
+    `Email: ${f.email.value}\n` +
+    `Phone: ${phone || "—"}\n` +
+    `Ship to:\n${fullAddress(f)}`
   );
 }
 
 function submitOrder(e) {
   e.preventDefault();
   const f = e.target;
-  // Require every shipping field before continuing
-  const required = ["name", "contact", "street", "city", "state", "zip"];
   const hint = document.getElementById("checkout-hint");
   f.querySelectorAll(".field-error").forEach((el) => el.classList.remove("field-error"));
+  const fail = (field, msg) => {
+    field.classList.add("field-error"); field.focus();
+    field.scrollIntoView({ block: "center", behavior: "smooth" });
+    if (hint) { hint.className = "form-hint err"; hint.textContent = msg; }
+  };
+  // Require every field except phone
+  const required = ["firstName", "lastName", "email", "street", "city", "state", "zip"];
   for (const nm of required) {
-    if (!f[nm].value.trim()) {
-      f[nm].classList.add("field-error");
-      f[nm].focus();
-      f[nm].scrollIntoView({ block: "center", behavior: "smooth" });
-      if (hint) { hint.className = "form-hint err"; hint.textContent = "Please complete every field — including city, state, and ZIP."; }
-      return;
-    }
+    if (!f[nm].value.trim()) { fail(f[nm], "Please complete every field — including city, state, and ZIP."); return; }
   }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email.value.trim())) { fail(f.email, "Please enter a valid email address."); return; }
   if (hint) { hint.className = "form-hint"; hint.textContent = ""; }
   try {
     localStorage.setItem(CUST_KEY, JSON.stringify({
-      name: f.name.value, contact: f.contact.value,
+      firstName: f.firstName.value, lastName: f.lastName.value, email: f.email.value, phone: f.phone.value,
       street: f.street.value, city: f.city.value, state: f.state.value, zip: f.zip.value,
     }));
   } catch {}
   const text = buildOrderText(f);
   const enc = encodeURIComponent(text);
-  const subject = encodeURIComponent(`New Order — ${f.name.value}`);
+  const subject = encodeURIComponent(`New Order — ${f.firstName.value} ${f.lastName.value}`);
   document.getElementById("ch-email").href = `mailto:${ORDER_EMAIL}?subject=${subject}&body=${enc}`;
 
   // Save the order to your Google Sheet (for customer/order tracking + refill
@@ -411,9 +414,10 @@ function submitOrder(e) {
       fetch(ORDER_ENDPOINT, {
         method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({
-          name: f.name.value, contact: f.contact.value, address: fullAddress(f),
-          notes: f.notes.value, items, subtotal: cartSubtotal(),
-          shipping: shippingTotal(), total: orderTotal(), code: appliedCode,
+          firstName: f.firstName.value, lastName: f.lastName.value,
+          email: f.email.value, phone: f.phone.value, address: fullAddress(f),
+          items, subtotal: cartSubtotal(), shipping: shippingTotal(),
+          total: orderTotal(), code: appliedCode,
         }),
       });
     } catch (err) { /* non-blocking */ }

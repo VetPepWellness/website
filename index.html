@@ -279,16 +279,17 @@
 
       <form class="checkout-form" id="checkout-form" novalidate>
         <div class="form-row">
-          <label>Full Name<input type="text" name="name" required autocomplete="name" /></label>
-          <label>Email or Phone<input type="text" name="contact" required autocomplete="email" /></label>
+          <label>First Name<input type="text" name="firstName" required autocomplete="given-name" /></label>
+          <label>Last Name<input type="text" name="lastName" required autocomplete="family-name" /></label>
         </div>
+        <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+        <label>Phone <span class="opt">(optional)</span><input type="tel" name="phone" autocomplete="tel" /></label>
         <label>Street Address<input type="text" name="street" required autocomplete="address-line1" /></label>
         <div class="form-row">
           <label>City<input type="text" name="city" required autocomplete="address-level2" /></label>
           <label>State<input type="text" name="state" required autocomplete="address-level1" /></label>
         </div>
         <label>ZIP Code<input type="text" name="zip" required inputmode="numeric" autocomplete="postal-code" /></label>
-        <label>Notes (optional)<textarea name="notes" rows="2" placeholder="Anything we should know?"></textarea></label>
         <button type="submit" class="btn btn-gold btn-block">Place Order</button>
         <p class="form-hint" id="checkout-hint"></p>
       </form>
