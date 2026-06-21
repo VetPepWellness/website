@@ -90,7 +90,7 @@ const ORDER_EMAIL = "vetpepwellness@gmail.com";
 const ORDER_PHONE = "";
 // Order tracking + refill reminders: paste your Google Apps Script Web App URL
 // here to auto-save every order to your Google Sheet (see backend/CRM-SETUP.md).
-const ORDER_ENDPOINT = "";
+const ORDER_ENDPOINT = "https://script.google.com/macros/s/AKfycbzCLsvp7oy5cnYsY4wi_wwR3giS0uLxOBnyjUlnX6Gq5t3QsbZG6AdhLDINruvj_XceKA/exec";
 
 const catById = (id) => CATEGORIES.find((c) => c.id === id) || {};
 const money = (n) => "$" + n.toLocaleString();
