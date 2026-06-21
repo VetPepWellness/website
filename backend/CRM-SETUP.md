@@ -25,6 +25,12 @@ your Google account. ~10 minutes, one time.
 
 That's it. Orders flow into the sheet; reminders go out daily.
 
+## Updating the script later
+You shouldn't need to — this script is **self-adapting** (it manages its own
+columns and accepts whatever the site sends). If you ever do paste a new version,
+just **Save → Deploy → Manage deployments → ✏️ edit → Version: New version → Deploy**.
+No need to delete the Orders tab; new columns are added automatically.
+
 ## Notes / options
 - **Refill timing:** change `REFILL_DAYS` at the top of `Code.gs` (default 30).
 - **Text (SMS) reminders:** email reminders are free. Automatic texts need a paid

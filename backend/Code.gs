@@ -2,10 +2,9 @@
  * Vet Pep Wellness — order capture + invoice + refill reminders
  * Google Apps Script (free, runs on your Google account).
  *
- * What it does:
- *   • Saves every website order to a Google Sheet (name, email, phone, address, items, totals, rep code, date)
- *   • Emails the customer a simple invoice + payment instructions (and you a copy)
- *   • Calculates a refill-due date; a daily job emails refill reminders and a "who's due" list
+ * This version is SELF-ADAPTING: it manages its own columns by header name and
+ * accepts whatever fields the website sends. You should never need to edit or
+ * re-deploy this again when the site changes — paste once, deploy once, done.
  *
  * Setup steps are in CRM-SETUP.md.
  */
@@ -14,48 +13,44 @@ const REFILL_DAYS      = 30;                      // days from order until refil
 const REMIND_LEAD_DAYS = 3;                       // remind this many days before due
 const OWNER_EMAIL      = "vetpepwellness@gmail.com";
 const SHEET_NAME       = "Orders";
-// Leave blank if the script is bound to the Sheet (Extensions → Apps Script).
-// For a STANDALONE script (script.google.com), paste your Sheet's ID (the long
-// part of the sheet link between /d/ and /edit).
+// Blank if the script is bound to the Sheet. For a STANDALONE script paste the
+// Sheet ID (the long part of the sheet link between /d/ and /edit).
 const SPREADSHEET_ID   = "1-N34JUbV0oSBVEvEMSc5MEp5kY-3qNuodCNeQVlKhZc";
-
-const HEADERS = [
-  "Timestamp", "First Name", "Last Name", "Email", "Phone", "Address",
-  "Items", "Subtotal", "Shipping", "Total", "Rep Code",
-  "Refill Due", "Reminder Sent", "Paid",
-];
 
 function getSS_() {
   return SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID)
                         : SpreadsheetApp.getActiveSpreadsheet();
 }
+function getSheet_() {
+  const ss = getSS_();
+  return ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+}
+const isEmail_ = (v) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(v));
 
 /** Receives orders POSTed from the website. */
 function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(30000);
   try {
-    const data = JSON.parse(e.postData.contents);
-    const sheet = getSheet_();
-    const now = new Date();
-    const due = new Date(now.getTime() + REFILL_DAYS * 86400000);
-    sheet.appendRow([
-      now,
-      data.firstName || "",
-      data.lastName || "",
-      data.email || "",
-      data.phone || "",
-      data.address || "",
-      data.items || "",
-      data.subtotal || "",
-      data.shipping || "",
-      data.total || "",
-      data.code || "",
-      due,
-      "NO", // reminder sent?
-      "NO", // paid? (mark YES when payment lands)
-    ]);
-    sendInvoice_(data);
+    const d = JSON.parse(e.postData.contents);
+    const values = {
+      "Timestamp": new Date(),
+      "First Name": d.firstName || "",
+      "Last Name": d.lastName || "",
+      "Email": d.email || "",
+      "Phone": d.phone || "",
+      "Address": d.address || "",
+      "Items": d.items || "",
+      "Subtotal": d.subtotal || "",
+      "Shipping": d.shipping || "",
+      "Total": d.total || "",
+      "Rep Code": d.code || "",
+      "Refill Due": new Date(Date.now() + REFILL_DAYS * 86400000),
+      "Reminder Sent": "NO",
+      "Paid": "NO",
+    };
+    writeRow_(getSheet_(), values);
+    sendInvoice_(d);
     return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
@@ -64,95 +59,88 @@ function doPost(e) {
   }
 }
 
-/** Health check when you open the web app URL in a browser. */
-function doGet() {
-  return json_({ ok: true, service: "Vet Pep Wellness order capture" });
-}
+function doGet() { return json_({ ok: true, service: "Vet Pep Wellness order capture" }); }
 
-function getSheet_() {
-  const ss = getSS_();
-  let s = ss.getSheetByName(SHEET_NAME);
-  if (!s) { s = ss.insertSheet(SHEET_NAME); s.appendRow(HEADERS); }
-  return s;
+/** Appends a row, auto-creating/aligning header columns by name. */
+function writeRow_(sheet, values) {
+  let headers = sheet.getLastRow() ? sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0] : [];
+  headers = headers.filter((h) => h !== "");
+  if (!headers.length) {
+    headers = Object.keys(values);
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  } else {
+    const missing = Object.keys(values).filter((h) => headers.indexOf(h) === -1);
+    if (missing.length) {
+      sheet.getRange(1, headers.length + 1, 1, missing.length).setValues([missing]);
+      headers = headers.concat(missing);
+    }
+  }
+  const row = headers.map((h) => (h in values ? values[h] : ""));
+  sheet.appendRow(row);
 }
 
 function json_(o) {
-  return ContentService.createTextOutput(JSON.stringify(o))
-    .setMimeType(ContentService.MimeType.JSON);
+  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
-const isEmail_ = (v) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(v));
-
-/** Emails a simple invoice to the customer + a copy to the owner. */
-function sendInvoice_(data) {
-  const name = `${data.firstName || ""} ${data.lastName || ""}`.trim();
+/** Emails a simple invoice to the customer (+ owner copy). */
+function sendInvoice_(d) {
+  const name = `${d.firstName || ""} ${d.lastName || ""}`.trim() || (d.name || "customer");
   const body =
     `Thanks for your order with Vet Pep Wellness — Peps and More!\n\n` +
-    `ORDER\n${data.items || ""}\n\n` +
-    `Subtotal: ${data.subtotal || ""}\n` +
-    `Shipping: ${data.shipping || ""}\n` +
-    `Total: ${data.total || ""}\n` +
-    (data.code ? `Referral / Salesperson code: ${data.code}\n` : "") +
-    `\nShip to:\n${name}\n${data.address || ""}\n\n` +
+    `ORDER\n${d.items || ""}\n\n` +
+    `Subtotal: ${d.subtotal || ""}\nShipping: ${d.shipping || ""}\nTotal: ${d.total || ""}\n` +
+    (d.code ? `Referral / Salesperson code: ${d.code}\n` : "") +
+    `\nShip to:\n${name}\n${d.address || ""}\n\n` +
     `HOW TO PAY\n` +
     `• Cash App: https://cash.app/$vetpepwellness\n` +
     `• Venmo: https://www.venmo.com/u/vetpepwellness\n` +
     `• Bitcoin (Cash App): https://cash.app/launch/bitcoin/$vetpepwellness/KtneJ3fp2a\n` +
     `• Cash — local pickup or delivery around Lubbock & West Texas\n` +
-    `Please add your name in the payment note so we can match it to your order. ` +
-    `We'll confirm once payment is received.\n\n` +
+    `Add your name in the payment note so we can match it to your order. We'll confirm once payment is received.\n\n` +
     `————————————\n` +
-    `Research use only. Products are not dietary supplements, drugs, or medications and are ` +
-    `not for human or veterinary consumption. Nothing here is medical advice. Must be 21+.\n` +
-    `— Vet Pep Wellness`;
+    `Research use only. Products are not dietary supplements, drugs, or medications and are not for ` +
+    `human or veterinary consumption. Nothing here is medical advice. Must be 21+.\n— Vet Pep Wellness`;
 
-  MailApp.sendEmail(OWNER_EMAIL, `New order — ${name || "customer"} (${data.total || ""})`, body);
-  if (isEmail_(data.email)) {
-    MailApp.sendEmail(String(data.email), "Your Vet Pep Wellness order & invoice", body);
-  }
+  const email = d.email || d.contact;
+  MailApp.sendEmail(OWNER_EMAIL, `New order — ${name} (${d.total || ""})`, body);
+  if (isEmail_(email)) MailApp.sendEmail(String(email), "Your Vet Pep Wellness order & invoice", body);
 }
 
-/**
- * Run once a day via a time-driven trigger (see CRM-SETUP.md).
- * Emails customers whose refill is near and sends you a daily "who's due" list.
- */
+/** Daily trigger: refill reminders + a "who's due" summary. Reads columns by name. */
 function dailyReminders() {
   const s = getSheet_();
-  const rows = s.getDataRange().getValues();
+  const data = s.getDataRange().getValues();
+  if (data.length < 2) return;
+  const H = data[0], idx = (n) => H.indexOf(n);
+  const iF = idx("First Name"), iL = idx("Last Name"), iEmail = idx("Email"),
+        iPhone = idx("Phone"), iItems = idx("Items"), iDue = idx("Refill Due"), iSent = idx("Reminder Sent");
+  if (iDue < 0 || iSent < 0) return;
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const cutoff = new Date(today.getTime() + REMIND_LEAD_DAYS * 86400000);
   const due = [];
 
-  for (let i = 1; i < rows.length; i++) {
-    const r = rows[i];
-    const name = `${r[1] || ""} ${r[2] || ""}`.trim();
-    const email = String(r[3] || ""), phone = String(r[4] || ""), items = r[6];
-    const refillDue = r[11] ? new Date(r[11]) : null;
-    const sent = String(r[12] || "").toUpperCase() === "YES";
-    if (!refillDue || sent) continue;
+  for (let i = 1; i < data.length; i++) {
+    const r = data[i];
+    const refillDue = r[iDue] ? new Date(r[iDue]) : null;
+    if (!refillDue || String(r[iSent]).toUpperCase() === "YES") continue;
     if (refillDue <= cutoff) {
-      due.push({ name: name, email: email, phone: phone, items: items });
+      const name = `${iF >= 0 ? r[iF] : ""} ${iL >= 0 ? r[iL] : ""}`.trim();
+      const email = iEmail >= 0 ? String(r[iEmail]) : "";
+      const items = iItems >= 0 ? r[iItems] : "";
+      due.push({ name, contact: email || (iPhone >= 0 ? r[iPhone] : ""), items });
       if (isEmail_(email)) {
-        MailApp.sendEmail(
-          email,
-          "Time to restock — Vet Pep Wellness",
-          `Hi ${r[1] || "there"},\n\n` +
-          `It's about time for your refill of:\n${items}\n\n` +
-          `Just reply to this email to reorder and we'll get it out to you.\n\n` +
-          `— Vet Pep Wellness · Peps and More`
-        );
+        MailApp.sendEmail(email, "Time to restock — Vet Pep Wellness",
+          `Hi ${(iF >= 0 && r[iF]) || "there"},\n\nIt's about time for your refill of:\n${items}\n\n` +
+          `Just reply to reorder and we'll get it out to you.\n\n— Vet Pep Wellness · Peps and More`);
       }
-      s.getRange(i + 1, 13).setValue("YES"); // Reminder Sent
+      s.getRange(i + 1, iSent + 1).setValue("YES");
     }
   }
 
   if (due.length) {
-    const list = due.map((d) => `• ${d.name} (${d.email || d.phone}) — ${d.items}`).join("\n");
-    MailApp.sendEmail(
-      OWNER_EMAIL,
-      `Refills due: ${due.length} customer(s)`,
-      `These customers are due for a refill:\n\n${list}\n\n` +
-      `Customers with an email were reminded automatically. Text the rest from this list.`
-    );
+    const list = due.map((x) => `• ${x.name} (${x.contact}) — ${x.items}`).join("\n");
+    MailApp.sendEmail(OWNER_EMAIL, `Refills due: ${due.length} customer(s)`,
+      `These customers are due for a refill:\n\n${list}\n\nEmail customers were reminded automatically. Text the rest.`);
   }
 }
