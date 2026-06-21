@@ -416,6 +416,8 @@ function submitOrder(e) {
         body: JSON.stringify({
           firstName: f.firstName.value, lastName: f.lastName.value,
           email: f.email.value, phone: f.phone.value, address: fullAddress(f),
+          // back-compat for the older Apps Script (so Name/Contact never land empty)
+          name: `${f.firstName.value} ${f.lastName.value}`.trim(), contact: f.email.value,
           items, subtotal: cartSubtotal(), shipping: shippingTotal(),
           total: orderTotal(), code: appliedCode,
         }),
