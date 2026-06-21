@@ -320,6 +320,12 @@ function openCheckout() {
     const f = document.getElementById("checkout-form");
     ["firstName", "lastName", "email", "phone", "street", "city", "state", "zip"].forEach((k) => { if (saved[k] && f[k]) f[k].value = saved[k]; });
   } catch {}
+  // Auto-apply a referral code from a scanned flyer link (?ref=CODE)
+  try {
+    const ref = localStorage.getItem("vpw_ref");
+    const input = document.getElementById("referral-code");
+    if (ref && input && !appliedCode) { input.value = ref; applyReferral(); }
+  } catch {}
   document.getElementById("checkout-form").hidden = false;
   document.querySelector(".referral").hidden = false;
   document.querySelector(".checkout-note").hidden = false;
@@ -476,6 +482,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
+
+  // Remember a referral code from a scanned flyer link (?ref=Z11111)
+  try {
+    const urlRef = new URLSearchParams(location.search).get("ref");
+    if (urlRef) localStorage.setItem("vpw_ref", urlRef.trim().toUpperCase());
+  } catch {}
 
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".nav");
