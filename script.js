@@ -443,6 +443,13 @@ function submitOrder(e) {
   document.getElementById("order-channels").hidden = false;
   const modal = document.querySelector(".modal");
   if (modal) modal.scrollTop = 0;
+
+  // Order placed — empty the cart (the confirmation summary above stays visible)
+  cart = {};
+  saveCart();
+  renderCart();
+  updateCartCount();
+  appliedCode = "";
 }
 
 // ---- Search & filter ----
