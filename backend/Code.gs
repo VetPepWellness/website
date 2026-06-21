@@ -47,7 +47,9 @@ function doPost(e) {
       data.notes || "",
       due,
       "NO", // reminder sent?
+      "NO", // paid? (mark YES when payment lands)
     ]);
+    sendInvoice_(data); // email the customer (if email on file) + owner
     return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
@@ -69,7 +71,7 @@ function getSheet_() {
     s.appendRow([
       "Timestamp", "Name", "Contact", "Address", "Items",
       "Subtotal", "Shipping", "Total", "Rep Code", "Notes",
-      "Refill Due", "Reminder Sent",
+      "Refill Due", "Reminder Sent", "Paid",
     ]);
   }
   return s;
@@ -78,6 +80,37 @@ function getSheet_() {
 function json_(o) {
   return ContentService.createTextOutput(JSON.stringify(o))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/** Emails a simple invoice to the customer (if their contact is an email) and a copy to the owner. */
+function sendInvoice_(data) {
+  const isEmail = (v) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(v));
+  const body =
+    `Thanks for your order with Vet Pep Wellness — Peps and More!\n\n` +
+    `ORDER\n${data.items || ""}\n\n` +
+    `Subtotal: ${data.subtotal || ""}\n` +
+    `Shipping: ${data.shipping || ""}\n` +
+    `Total: ${data.total || ""}\n` +
+    (data.code ? `Referral / Salesperson code: ${data.code}\n` : "") +
+    `\nShip to:\n${data.name || ""}\n${data.address || ""}\n\n` +
+    `HOW TO PAY\n` +
+    `• Cash App: https://cash.app/$vetpepwellness\n` +
+    `• Venmo: https://www.venmo.com/u/vetpepwellness\n` +
+    `• Bitcoin (Cash App): https://cash.app/launch/bitcoin/$vetpepwellness/KtneJ3fp2a\n` +
+    `• Cash — local pickup or delivery around Lubbock & West Texas\n` +
+    `Please add your name in the payment note so we can match it to your order. ` +
+    `We'll confirm once payment is received.\n\n` +
+    `————————————\n` +
+    `Research use only. Products are not dietary supplements, drugs, or medications and are ` +
+    `not for human or veterinary consumption. Nothing here is medical advice. Must be 21+.\n` +
+    `— Vet Pep Wellness`;
+
+  // Copy to owner (always)
+  MailApp.sendEmail(OWNER_EMAIL, `New order — ${data.name || "customer"} (${data.total || ""})`, body);
+  // Invoice to customer (only if they gave an email)
+  if (isEmail(data.contact)) {
+    MailApp.sendEmail(String(data.contact), "Your Vet Pep Wellness order & invoice", body);
+  }
 }
 
 /**

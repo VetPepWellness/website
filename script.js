@@ -318,7 +318,7 @@ function openCheckout() {
   try {
     const saved = JSON.parse(localStorage.getItem(CUST_KEY)) || {};
     const f = document.getElementById("checkout-form");
-    ["name", "contact", "address"].forEach((k) => { if (saved[k]) f[k].value = saved[k]; });
+    ["name", "contact", "street", "city", "state", "zip"].forEach((k) => { if (saved[k] && f[k]) f[k].value = saved[k]; });
   } catch {}
   document.getElementById("checkout-form").hidden = false;
   document.querySelector(".referral").hidden = false;
@@ -345,6 +345,10 @@ function applyReferral() {
   renderCheckoutSummary();
 }
 
+function fullAddress(f) {
+  return `${f.street.value.trim()}, ${f.city.value.trim()}, ${f.state.value.trim()} ${f.zip.value.trim()}`;
+}
+
 function buildOrderText(f) {
   const lines = Object.keys(cart).map((key) => {
     const { id, dose } = parseKey(key);
@@ -362,7 +366,7 @@ function buildOrderText(f) {
     `Shipping: ${money(shippingTotal())}\n` +
     `Total: ${money(orderTotal())}` +
     `${referralLine}\n\n` +
-    `Name: ${f.name.value}\nContact: ${f.contact.value}\nShip to:\n${f.address.value}\n\n` +
+    `Name: ${f.name.value}\nContact: ${f.contact.value}\nShip to:\n${fullAddress(f)}\n\n` +
     `Notes: ${f.notes.value || "—"}`
   );
 }
@@ -370,8 +374,25 @@ function buildOrderText(f) {
 function submitOrder(e) {
   e.preventDefault();
   const f = e.target;
+  // Require every shipping field before continuing
+  const required = ["name", "contact", "street", "city", "state", "zip"];
+  const hint = document.getElementById("checkout-hint");
+  f.querySelectorAll(".field-error").forEach((el) => el.classList.remove("field-error"));
+  for (const nm of required) {
+    if (!f[nm].value.trim()) {
+      f[nm].classList.add("field-error");
+      f[nm].focus();
+      f[nm].scrollIntoView({ block: "center", behavior: "smooth" });
+      if (hint) { hint.className = "form-hint err"; hint.textContent = "Please complete every field — including city, state, and ZIP."; }
+      return;
+    }
+  }
+  if (hint) { hint.className = "form-hint"; hint.textContent = ""; }
   try {
-    localStorage.setItem(CUST_KEY, JSON.stringify({ name: f.name.value, contact: f.contact.value, address: f.address.value }));
+    localStorage.setItem(CUST_KEY, JSON.stringify({
+      name: f.name.value, contact: f.contact.value,
+      street: f.street.value, city: f.city.value, state: f.state.value, zip: f.zip.value,
+    }));
   } catch {}
   const text = buildOrderText(f);
   const enc = encodeURIComponent(text);
@@ -390,7 +411,7 @@ function submitOrder(e) {
       fetch(ORDER_ENDPOINT, {
         method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({
-          name: f.name.value, contact: f.contact.value, address: f.address.value,
+          name: f.name.value, contact: f.contact.value, address: fullAddress(f),
           notes: f.notes.value, items, subtotal: cartSubtotal(),
           shipping: shippingTotal(), total: orderTotal(), code: appliedCode,
         }),

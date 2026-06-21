@@ -184,6 +184,8 @@ img { display: block; max-width: 100%; }
 .newsletter-form input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 0.8rem 1.1rem; font-family: inherit; }
 .newsletter-form input:focus { outline: none; border-color: var(--gold); }
 .form-hint { text-align: center; color: var(--gold-light); min-height: 1.2em; margin-top: 0.8rem; }
+.form-hint.err { color: #e8a06a; }
+.field-error { border-color: #e8746a !important; box-shadow: 0 0 0 2px rgba(232,116,106,0.25); }
 
 /* ===== Footer ===== */
 .site-footer { border-top: 1px solid var(--line); background: var(--emerald-darkest); padding: 3rem 0 1.6rem; }
