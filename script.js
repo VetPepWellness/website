@@ -1,4 +1,5 @@
 // ===== Vet Pep Wellness — storefront =====
+const ASSET_VER = "1783003021"; // bump to force-refresh product images after a change
 // In-stock catalogue. We can source other peptides on request (special order).
 
 // ---- Categories ----
@@ -184,7 +185,7 @@ function productCard(p) {
     <div class="product-media">
       <span class="product-tag" style="background:${cat.color}">${cat.name}</span>
       ${p.best ? '<span class="product-badge">Best Seller</span>' : ""}
-      <img class="product-photo" src="assets/products/${p.id}.png" alt="${p.name} vial" loading="lazy" />
+      <img class="product-photo" src="assets/products/${p.id}.png?v=${ASSET_VER}" alt="${p.name} vial" loading="lazy" />
     </div>
     <div class="product-body">
       <h3 class="product-name">${p.name}</h3>
@@ -246,7 +247,7 @@ function renderCart() {
     const qty = cart[key];
     return `
     <div class="cart-item">
-      <div class="cart-item-media"><img src="assets/products/${id}.png" alt="" /></div>
+      <div class="cart-item-media"><img src="assets/products/${id}.png?v=${ASSET_VER}" alt="" /></div>
       <div class="cart-item-info">
         <div class="cart-item-name">${p.name}${dose ? " · " + dose : ""}</div>
         <div class="cart-item-price">${money(variantPrice(id, dose))} each</div>
