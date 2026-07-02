@@ -17,7 +17,7 @@ const PRODUCTS = [
   // ===== GLP-1 & Weight Loss =====
   { id: "retatrutide", cat: "glp1", name: "Retatrutide", best: true,
     info: "Triple GLP-1/GIP/glucagon — the strongest fat-loss peptide in the lineup.",
-    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:85},{dose:"30 mg",price:175},{dose:"50 mg",price:225},{dose:"60 mg",price:265}] },
+    variants: [{dose:"5 mg",price:55},{dose:"10 mg",price:85},{dose:"30 mg",price:165},{dose:"50 mg",price:225},{dose:"60 mg",price:265}] },
   { id: "tirzepatide", cat: "glp1", name: "Tirzepatide", best: true,
     info: "Dual GLP-1/GIP — strong appetite control, weight loss and glucose support.",
     variants: [{dose:"5 mg",price:50},{dose:"10 mg",price:70},{dose:"15 mg",price:80},{dose:"20 mg",price:105},{dose:"40 mg",price:120},{dose:"50 mg",price:140},{dose:"60 mg",price:165}] },
@@ -45,10 +45,10 @@ const PRODUCTS = [
     variants: [{dose:"10 mg (5 + 5)",price:105},{dose:"20 mg (10 + 10)",price:180}] },
   { id: "glow", cat: "repair", name: "Glow (BPC-157 + GHK-Cu + TB-500)", best: true,
     info: "Skin + tissue-repair blend for recovery and a healthy glow. BPC-157 10mg · GHK-Cu 50mg · TB-500 10mg.",
-    variants: [{dose:"70 mg",price:160}] },
+    variants: [{dose:"70 mg",price:130}] },
   { id: "klow", cat: "repair", name: "KLOW (GHK-Cu + TB-500 + BPC-157 + KPV)", best: true,
     info: "Broadest repair blend — skin, tissue, tendon and inflammation. GHK-Cu 50mg · TB-500 10mg · BPC-157 10mg · KPV 10mg.",
-    variants: [{dose:"80 mg",price:195}] },
+    variants: [{dose:"80 mg",price:160}] },
 
   // ===== Energy & Longevity =====
   { id: "nad", cat: "longevity", name: "NAD+",
@@ -184,7 +184,7 @@ function productCard(p) {
     <div class="product-media">
       <span class="product-tag" style="background:${cat.color}">${cat.name}</span>
       ${p.best ? '<span class="product-badge">Best Seller</span>' : ""}
-      ${vialSVG(p)}
+      <img class="product-photo" src="assets/products/${p.id}.png" alt="${p.name} vial" loading="lazy" />
     </div>
     <div class="product-body">
       <h3 class="product-name">${p.name}</h3>
@@ -246,7 +246,7 @@ function renderCart() {
     const qty = cart[key];
     return `
     <div class="cart-item">
-      <div class="cart-item-media">${vialSVG(p, true)}</div>
+      <div class="cart-item-media"><img src="assets/products/${id}.png" alt="" /></div>
       <div class="cart-item-info">
         <div class="cart-item-name">${p.name}${dose ? " · " + dose : ""}</div>
         <div class="cart-item-price">${money(variantPrice(id, dose))} each</div>
