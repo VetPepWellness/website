@@ -6,25 +6,25 @@
   <title>Vet Pep Wellness — Peps and More</title>
   <meta name="description" content="Vet Pep Wellness — premium research peptides and wellness products. Peps and More. Veteran founded. GLP-1 analogs, geroprotectors, recovery and performance support." />
   <meta name="theme-color" content="#07211d" />
-  <link rel="canonical" href="https://vetpepwellness.com/" />
+  <link rel="canonical" href="https://vetpepwellness.github.io/website/" />
   <!-- Open Graph / social sharing -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Vet Pep Wellness" />
   <meta property="og:title" content="Vet Pep Wellness — Peps and More" />
   <meta property="og:description" content="Premium peptides & wellness products. Veteran founded & operated. And yes… there's a pep for that." />
-  <meta property="og:url" content="https://vetpepwellness.com/" />
-  <meta property="og:image" content="https://vetpepwellness.com/assets/og-image.png" />
+  <meta property="og:url" content="https://vetpepwellness.github.io/website/" />
+  <meta property="og:image" content="https://vetpepwellness.github.io/website/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Vet Pep Wellness — Peps and More" />
   <meta name="twitter:description" content="Premium peptides & wellness products. Veteran founded & operated." />
-  <meta name="twitter:image" content="https://vetpepwellness.com/assets/og-image.png" />
+  <meta name="twitter:image" content="https://vetpepwellness.github.io/website/assets/og-image.png" />
   <!-- NOTE: replace the vetpepwellness.com URLs above with your real domain. -->
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/logo.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=1783003021" />
+  <link rel="stylesheet" href="styles.css?v=1783644538" />
 </head>
 <body>
   <!-- Top bar -->
@@ -246,77 +246,12 @@
     <div class="cart-items" id="cart-items"><!-- injected --></div>
     <div class="cart-foot">
       <div class="cart-total"><span>Subtotal</span><span id="cart-subtotal">$0</span></div>
-      <p class="cart-note">Shipping calculated at checkout.</p>
-      <button class="btn btn-gold btn-block" id="checkout-btn" disabled>Checkout</button>
+      <p class="cart-note">Tap below to email us your order. We'll reply to confirm shipping, your total, and how to pay.</p>
+      <button class="btn btn-gold btn-block" id="email-order-btn" disabled>✉ Email Your Order</button>
     </div>
   </aside>
 
-  <!-- Checkout modal -->
-  <div class="modal-overlay" id="checkout-overlay" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
-      <button class="modal-close" id="checkout-close" aria-label="Close">✕</button>
-      <h3 id="checkout-title">Review &amp; Place Order</h3>
-      <p class="modal-sub">Send us your order and we'll confirm availability, total (incl. shipping), and payment details.</p>
-      <div class="checkout-summary" id="checkout-summary"><!-- injected --></div>
 
-      <!-- BAC water reminder -->
-      <div class="bac-reminder" id="bac-reminder" hidden>
-        <p>💧 Most peptides need <strong>BAC water (3 mL)</strong> to mix before use. Did you forget yours?</p>
-        <button type="button" class="btn btn-gold" id="add-bac-btn">Add BAC Water 3 mL — $15</button>
-      </div>
-
-      <!-- Salesperson / referral code -->
-      <div class="referral">
-        <label for="referral-code">Have a salesperson or referral code? <span>(optional — get free BAC water)</span></label>
-        <div class="referral-row">
-          <input type="text" id="referral-code" placeholder="Enter code" autocomplete="off" />
-          <button type="button" class="btn btn-ghost" id="apply-code">Apply</button>
-        </div>
-        <p class="referral-status" id="referral-status"></p>
-      </div>
-
-      <p class="checkout-note">Most products require BAC water to reconstitute. In-stock items typically ship same or next day; anything we special-order for you can take about 7–10 days — we'll keep you posted either way. <strong>Research use only — not for human consumption and not medical advice.</strong> Must be 21+.</p>
-
-      <form class="checkout-form" id="checkout-form" novalidate>
-        <div class="form-row">
-          <label>First Name<input type="text" name="firstName" required autocomplete="given-name" /></label>
-          <label>Last Name<input type="text" name="lastName" required autocomplete="family-name" /></label>
-        </div>
-        <label>Email<input type="email" name="email" required autocomplete="email" /></label>
-        <label>Phone <span class="opt">(optional)</span><input type="tel" name="phone" autocomplete="tel" /></label>
-        <label>Street Address<input type="text" name="street" required autocomplete="address-line1" /></label>
-        <div class="form-row">
-          <label>City<input type="text" name="city" required autocomplete="address-level2" /></label>
-          <label>State<input type="text" name="state" required autocomplete="address-level1" /></label>
-        </div>
-        <label>ZIP Code<input type="text" name="zip" required inputmode="numeric" autocomplete="postal-code" /></label>
-        <button type="submit" class="btn btn-gold btn-block">Place Order</button>
-        <p class="form-hint" id="checkout-hint"></p>
-      </form>
-
-      <!-- Confirmation (shown after Place Order) -->
-      <div class="order-channels" id="order-channels" hidden>
-        <p class="order-sent-title">✓ Order received!</p>
-        <p class="order-sent-desc">We've logged your order and we'll reach out to confirm your total (including shipping). To speed things up, go ahead and send payment using an option below — add your name in the note so we can match it.</p>
-        <div class="pay-methods">
-          <p class="pay-title">Pay by</p>
-          <div class="pay-links">
-            <a class="pay-link" href="https://cash.app/$vetpepwellness" target="_blank" rel="noopener">💵 Cash App — $vetpepwellness</a>
-            <a class="pay-link" href="https://www.venmo.com/u/vetpepwellness" target="_blank" rel="noopener">🅥 Venmo — @vetpepwellness</a>
-            <a class="pay-link" href="https://cash.app/launch/bitcoin/$vetpepwellness/KtneJ3fp2a" target="_blank" rel="noopener">₿ Bitcoin (via Cash App)</a>
-            <span class="pay-link static">🤝 Cash — local pickup or delivery around Lubbock &amp; West Texas</span>
-          </div>
-          <p class="pay-note">Send payment once we confirm your total, and add your name in the note so we can match it to your order.</p>
-        </div>
-        <p class="order-channels-note">Have a question, or want a copy for your records?</p>
-        <div class="channel-btns">
-          <a class="btn btn-ghost channel-btn" id="ch-email" href="#">✉ Email Us</a>
-          <button class="btn btn-ghost channel-btn" id="ch-copy" type="button">⧉ Copy Order</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js?v=1783003021"></script>
+  <script src="script.js?v=1783644538"></script>
 </body>
 </html>
