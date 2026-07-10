@@ -527,6 +527,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const open = nav.classList.toggle("open");
     toggle.setAttribute("aria-expanded", String(open));
   });
+  // Close the mobile menu when a nav link is tapped (fixes on-page #about/#shop
+  // links leaving the menu open over the content).
+  nav?.querySelectorAll("a").forEach((a) =>
+    a.addEventListener("click", () => {
+      nav.classList.remove("open");
+      toggle?.setAttribute("aria-expanded", "false");
+    })
+  );
 
   // Dosage selector updates the displayed price
   document.addEventListener("change", (e) => {
