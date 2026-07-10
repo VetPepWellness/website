@@ -232,7 +232,7 @@ function renderShop() {
 
 function renderCart() {
   const wrap = document.getElementById("cart-items");
-  const checkoutBtn = document.getElementById("checkout-btn");
+  const checkoutBtn = document.getElementById("email-order-btn");
   if (!wrap) return;
   const keys = Object.keys(cart);
   if (!keys.length) {
@@ -279,6 +279,30 @@ function closeCart() {
   document.getElementById("cart-drawer").classList.remove("open");
   document.getElementById("cart-drawer").setAttribute("aria-hidden", "true");
   document.getElementById("cart-overlay").hidden = true;
+}
+
+// ---- Email order (no checkout form) ----
+function emailOrder() {
+  const keys = Object.keys(cart);
+  if (!keys.length) return;
+  const lines = keys.map((k) => {
+    const { id, dose } = parseKey(k);
+    const p = findProduct(id);
+    return `- ${p.name}${dose ? " " + dose : ""} x${cart[k]} = ${money(variantPrice(id, dose) * cart[k])}`;
+  });
+  let ref = "";
+  try { ref = (localStorage.getItem("vpw_ref") || "").toUpperCase(); } catch {}
+  const validRef = REPS.includes(ref);
+  if (validRef) lines.push(`- BAC Water 3 mL x1 = FREE (referral ${ref})`);
+  const body =
+    `Hi Vet Pep Wellness, I'd like to order:\n\n${lines.join("\n")}\n\n` +
+    `Subtotal: ${money(cartSubtotal())}\n` +
+    `Shipping: $${SHIP_BASE} + $${SHIP_PER_VIAL}/vial (you'll confirm my total)\n\n` +
+    (validRef ? `Referral code: ${ref}\n\n` : "") +
+    `MY NAME:\nMY FULL SHIPPING ADDRESS:\n\n` +
+    `(Please reply to confirm my total and payment — Cash App $vetpepwellness, Venmo @vetpepwellness, Bitcoin, or cash for local pickup/delivery around Lubbock & West Texas.)`;
+  const subject = encodeURIComponent("Vet Pep Wellness Order");
+  window.location.href = `mailto:${ORDER_EMAIL}?subject=${subject}&body=${encodeURIComponent(body)}`;
 }
 
 // ---- Checkout ----
@@ -543,7 +567,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("cart-btn")?.addEventListener("click", openCart);
   document.getElementById("cart-close")?.addEventListener("click", closeCart);
   document.getElementById("cart-overlay")?.addEventListener("click", closeCart);
-  document.getElementById("checkout-btn")?.addEventListener("click", () => { closeCart(); openCheckout(); });
+  document.getElementById("email-order-btn")?.addEventListener("click", emailOrder);
   document.getElementById("checkout-close")?.addEventListener("click", closeCheckout);
   document.getElementById("checkout-overlay")?.addEventListener("click", (e) => { if (e.target.id === "checkout-overlay") closeCheckout(); });
   document.getElementById("checkout-form")?.addEventListener("submit", submitOrder);

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vetpepwellness.com/sitemap.xml
+Sitemap: https://vetpepwellness.github.io/website/sitemap.xml
